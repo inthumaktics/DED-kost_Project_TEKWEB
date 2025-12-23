@@ -1,27 +1,14 @@
-// App.jsx - Konfigurasi routing
-import React from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-import Home from './pages/public/Home'; // Anggota A akan buat
-import AdminDashboard from './pages/admin/AdminDashboard';
-import AdminEditPage from './pages/admin/AdminEditPage';
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Home from "./pages/Home";
+import Detail from "./pages/Detail";
 
-function App() {
+export default function App() {
   return (
-    <Router>
+    <BrowserRouter>
       <Routes>
-        {/* Public routes */}
         <Route path="/" element={<Home />} />
-        <Route path="/detail/:id" element={<DetailProduct />} /> {/* Anggota A */}
-        
-        {/* Admin routes */}
-        <Route path="/admin" element={<AdminDashboard />} />
-        <Route path="/admin/edit/:id" element={<AdminEditPage />} />
-        
-        {/* Redirect default */}
-        <Route path="*" element={<Navigate to="/" />} />
+        <Route path="/detail/:id" element={<Detail />} />
       </Routes>
-    </Router>
+    </BrowserRouter>
   );
 }
-
-export default App;
