@@ -1,131 +1,50 @@
-// AdminEditPage.jsx - Halaman edit data
-import React, { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
-import AdminHeader from '../../components/admin/AdminHeader';
+    import { useState } from 'react'
+    import { useNavigate } from 'react-router-dom'
+    import AdminHeader from '../components/admin/AdminHeader'
+    import FormData from '../components/admin/FormData'
+    import DataTable from '../components/admin/DataTable'
+    import { kostData } from '../data/kostData'
 
-const AdminEditPage = () => {
-  const { id } = useParams(); // Mengambil ID dari URL
-  const navigate = useNavigate();
-  
-  const [formData, setFormData] = useState({
-    name: '',
-    category: '',
-    price: '',
-    description: '',
-  });
+    const AdminEditPages = () => {
+    const navigate = useNavigate()
+    const [kosts, setKosts] = useState(kostData)
 
-  // Simulasi fetch data berdasarkan ID
-  useEffect(() => {
-    // Data dummy (nanti akan diganti dengan API)
-    const dummyData = [
-      { id: 1, name: "Sony Headphones", category: "Elektronik", price: 5000000, description: "Noise cancelling" },
-      { id: 2, name: "MacBook Air", category: "Laptop", price: 15000000, description: "M1 Chip" },
-    ];
-    
-    const item = dummyData.find(item => item.id === parseInt(id));
-    if (item) {
-      setFormData(item);
+    const handleAddKost = (newKost) => {
+        setKosts([...kosts, newKost])
+        console.log('Kost ditambahkan:', newKost)
     }
-  }, [id]);
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({
-      ...prev,
-      [name]: value
-    }));
-  };
+    const handleDeleteKost = (id) => {
+        setKosts(kosts.filter(kost => kost.id !== id))
+        console.log(`Kost dengan ID ${id} dihapus dari state`)
+    }
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log('Update data:', formData);
-    // Redirect kembali ke dashboard
-    navigate('/admin');
-  };
-
-  return (
-    <div className="min-h-screen bg-gray-50">
-      <AdminHeader />
-      
-      <main className="max-w-3xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-        <div className="bg-white p-6 rounded-lg shadow">
-          <h2 className="text-2xl font-bold mb-6">Edit Data (ID: {id})</h2>
-          
-          <form onSubmit={handleSubmit} className="space-y-4">
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Nama
-              </label>
-              <input
-                type="text"
-                name="name"
-                value={formData.name}
-                onChange={handleChange}
-                className="w-full p-2 border border-gray-300 rounded"
-                required
-              />
+    return (
+        <div className="min-h-screen bg-gray-100">
+        <AdminHeader />
+        
+        <div className="container mx-auto px-4 py-8">
+            <div className="mb-8">
+            <button
+                onClick={() => navigate('/')}
+                className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition"
+            >
+                ← Kembali ke Home
+            </button>
             </div>
 
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Kategori
-              </label>
-              <input
-                type="text"
-                name="category"
-                value={formData.category}
-                onChange={handleChange}
-                className="w-full p-2 border border-gray-300 rounded"
-                required
-              />
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <div className="lg:col-span-1">
+                <FormData onAddKost={handleAddKost} />
             </div>
-
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Harga
-              </label>
-              <input
-                type="number"
-                name="price"
-                value={formData.price}
-                onChange={handleChange}
-                className="w-full p-2 border border-gray-300 rounded"
-                required
-              />
+            
+            <div className="lg:col-span-2">
+                <DataTable kosts={kosts} onDeleteKost={handleDeleteKost} />
             </div>
-
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Deskripsi
-              </label>
-              <textarea
-                name="description"
-                value={formData.description}
-                onChange={handleChange}
-                className="w-full p-2 border border-gray-300 rounded h-32"
-              />
             </div>
-
-            <div className="flex gap-3">
-              <button
-                type="submit"
-                className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
-              >
-                Simpan Perubahan
-              </button>
-              <button
-                type="button"
-                onClick={() => navigate('/admin')}
-                className="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600"
-              >
-                Batal
-              </button>
-            </div>
-          </form>
         </div>
-      </main>
-    </div>
-  );
-};
+        </div>
+    )
+    }
 
-export default AdminEditPage;
+    export default AdminEditPages

@@ -1,14 +1,26 @@
-export default function Navbar() {
+    import { Link } from 'react-router-dom'
+
+    const Navbar = () => {
     return (
-    <nav className="sticky top-0 z-50 bg-white border-b">
-        <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
-        <h1 className="text-2xl font-bold text-emerald-600">
-            DED-kost
-        </h1>
-        <span className="text-sm text-gray-500">
-            Cari kost nyaman & aman
-        </span>
+        <nav className="bg-blue-600 text-white shadow-lg">
+        <div className="container mx-auto px-4 py-3 flex justify-between items-center">
+            <Link to="/" className="text-2xl font-bold">
+            KostFinder
+            </Link>
+            <div className="space-x-6">
+            <Link to="/" className="hover:text-blue-200 transition">
+                Home
+            </Link>
+            <Link to="/admin" className="hover:text-blue-200 transition">
+                Admin Panel
+            </Link>
+            <button className="bg-white text-blue-600 px-4 py-2 rounded-lg font-semibold hover:bg-blue-50 transition">
+                Login
+            </button>
+            </div>
         </div>
-    </nav>
-    );
-}
+        </nav>
+    )
+    }
+
+    export default Navbar
