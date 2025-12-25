@@ -1,7 +1,8 @@
-import { useState } from 'react';
+import {useEffect, useState } from 'react';
 import Navbar from '@/components/public/Navbar';
 import ProductCard from '@/components/public/ProductCard';
 import Footer from '@/components/public/Footer';
+import { kostData } from "@/data/kostData";
 
 const Home = () => {
   const [kostData] = useState([
