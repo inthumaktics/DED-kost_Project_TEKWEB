@@ -1,14 +1,22 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Home from "./pages/Home";
-import Detail from "./pages/Detail";
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import Home from './pages/Home';
+import Detail from './pages/Detail';
+// import AdminDashboard from './pages/AdminDashboard';
+import AdminEdit from './pages/AdminEdit';
 
-export default function App() {
+function App() {
   return (
-    <BrowserRouter basename="/DED-kost_Project_TEKWEB">
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/detail/:id" element={<Detail />} />
-      </Routes>
-    </BrowserRouter>
+    <Router>
+      <div className="App min-h-screen bg-gray-50">
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/detail-produk/:id" element={<Detail />} />
+          {/* <Route path="/admin" element={<AdminDashboard />} /> */}
+          <Route path="/admin/edit/:id" element={<AdminEdit />} />
+        </Routes>
+      </div>
+    </Router>
   );
 }
+
+export default App;
