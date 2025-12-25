@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import { useState } from 'react';
+import logoNavbar from '@/assets/logo_navbar.png';
 
 const Navbar = () => {
   const [isLoginOpen, setIsLoginOpen] = useState(false);  
@@ -12,7 +13,7 @@ const Navbar = () => {
 <div className="flex-shrink-0">
   <Link to="/">
     <img
-      src="src/assets/logo_navbar.png"
+      src={logoNavbar}
       alt="DED-kost Logo"
       className="h-12"/>
   </Link>
