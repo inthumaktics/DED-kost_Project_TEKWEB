@@ -14,7 +14,7 @@ const Navbar = () => {
     <img
       src="src/assets/logo_navbar.png"
       alt="DED-kost Logo"
-      className="w- h-12"/>
+      className="h-12"/>
   </Link>
 </div>
 
