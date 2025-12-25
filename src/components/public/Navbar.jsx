@@ -12,7 +12,7 @@ const Navbar = () => {
 <div className="flex-shrink-0">
   <Link to="/">
     <img
-      src="src/assets/logo.png"
+      src="src/assets/logo_navbar.png"
       alt="DED-kost Logo"
       className="w- h-12"/>
   </Link>
