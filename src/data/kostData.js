@@ -2,21 +2,21 @@ export const kostData = [
   {
     id: 1,
     name: "Kost Putri Melati Indah",
-    location: "Tlogomas, Malang",
     price: 1500000,
-    discountPrice: 750000,
-    facilities: ["WiFi", "AC", "Private Bathroom"],
-    image: "/images/kost-1.jpg",
-    discount: 50,
+    facilities: ["WiFi", "AC", "Private Bathroom", "Kitchen", "Laundry", "Parking"],
+    description: "Comfortable and clean kost for female students and workers. Located in a strategic area with easy access to public transportation.",
+    address: "Jl. Melati No. 123, Jakarta Selatan",
+    rules: ["No smoking", "No pets", "Quiet hours 10 PM - 6 AM", "Visitors allowed until 9 PM"],
+    location: "Jakarta Selatan"
   },
   {
     id: 2,
     name: "Kost Putra Mawar Residence",
-    location: "Dinoyo, Malang",
     price: 1200000,
-    discountPrice: 900000,
     facilities: ["WiFi", "Fan", "Security"],
-    image: "/images/kost-2.jpg",
-    discount: 25,
+    description: "Comfortable and clean kost for male students and workers. Located in a strategic area with easy access to public transportation.",
+    address: "Jl. Mawar No. 456, Malang",
+    rules: ["No smoking", "No pets", "Quiet hours 10 PM - 6 AM", "Visitors allowed until 9 PM"],
+    location: "Malang"
   },
 ];
