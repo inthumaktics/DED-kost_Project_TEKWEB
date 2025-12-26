@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import { useState } from 'react';
-import logoNavbar from '@/assets/logo_navbar.png';
+import logoNavbar from '@/assets/logo/logo_navbar.png';
 
 const Navbar = () => {
   const [isLoginOpen, setIsLoginOpen] = useState(false);  
@@ -28,7 +28,7 @@ const Navbar = () => {
       <Link
         key={item}
         to={item === "Home" ? "/" : `/${item.toLowerCase()}`}
-        className="text-gray-700 hover:text-primary hover:bg-gray-50 px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200">
+        className="text-gray-700 hover:text-primary hover:bg-violet-200 px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200">
         {item}
       </Link>
     ))}
@@ -47,21 +47,21 @@ const Navbar = () => {
     <div className="relative">
       <button
         onClick={() => setIsLoginOpen(!isLoginOpen)}
-        className="text-gray-700 hover:text-primary hover:bg-gray-50 px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200">
+        className="text-gray-700 hover:text-primary hover:bg-violet-200 px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200">
           Login
         </button>
 
       {isLoginOpen && (
-        <div className="absolute right-0 mt-2 w-44 bg-white border border-gray-100 rounded-xl shadow-lg z-50">
+        <div className="absolute right-0 mt-2 w-44 bg-white border border-violet-100 rounded-xl shadow-lg z-50">
           <Link
             to="/login"
-            className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 rounded-t-xl">
+            className="block px-4 py-2 text-sm text-gray-700 hover:bg-violet-100 rounded-t-xl">
             User Login
           </Link>
 
           <Link
             to="/admin"
-            className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 rounded-b-xl">
+            className="block px-4 py-2 text-sm text-gray-700 hover:bg-violet-200 rounded-b-xl">
             Admin Login
           </Link>
         </div>

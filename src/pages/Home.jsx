@@ -1,132 +1,146 @@
-import {useEffect, useState } from 'react';
-import Navbar from '@/components/public/Navbar';
-import ProductCard from '@/components/public/ProductCard';
-import Footer from '@/components/public/Footer';
-// import { kostData } from "@/data/kostData";
+import { useEffect, useRef, useState } from "react";
+import Navbar from "@/components/public/Navbar";
+import Footer from "@/components/public/Footer";
+import { kostDiscountData } from "@/data/kostDiscountData";
+
+// typing words
+const typingWords = ["Perfect Kost", "Affordable Kost", "Comfortable Kost"];
 
 const Home = () => {
-  const [kostData] = useState([
-    {
-      id: 1,
-      name: "Kost Putri Melati Indah",
-      price: 1500000,
-      facilities: ["WiFi", "AC", "Private Bathroom", "Kitchen", "Laundry", "Parking"],
-      image: null
-    },
-    {
-      id: 2,
-      name: "Kost Putra Mawar Residence",
-      price: 1200000,
-      facilities: ["WiFi", "Fan", "Shared Bathroom", "Kitchen", "Security"],
-      image: null
-    },
-    {
-      id: 3,
-      name: "Kost Campur Anggrek Plaza",
-      price: 1800000,
-      facilities: ["WiFi", "AC", "Private Bathroom", "Kitchen", "Gym", "Swimming Pool", "24h Security"],
-      image: null
-    },
-    {
-      id: 4,
-      name: "Kost Putri Dahlia Cozy",
-      price: 1000000,
-      facilities: ["WiFi", "Fan", "Shared Bathroom", "Kitchen"],
-      image: null
-    },
-    {
-      id: 5,
-      name: "Kost Putra Sakura Modern",
-      price: 2000000,
-      facilities: ["WiFi", "AC", "Private Bathroom", "Kitchen", "Laundry", "Parking", "Rooftop"],
-      image: null
-    },
-    {
-      id: 6,
-      name: "Kost Putri Tulip Garden",
-      price: 1300000,
-      facilities: ["WiFi", "AC", "Private Bathroom", "Kitchen", "Garden"],
-      image: null
-    }
-  ]);
+  /* =======================
+    STATE & REF (PALING ATAS)
+     ======================= */
+  const [typedText, setTypedText] = useState("");
+  const [wordIndex, setWordIndex] = useState(0);
+  const sliderRef = useRef(null);
+  const [isHovering, setIsHovering] = useState(false);
+
+  /* =======================
+    TYPING EFFECT
+     ======================= */
+  useEffect(() => {
+    let charIndex = 0;
+
+    const typingInterval = setInterval(() => {
+      setTypedText(typingWords[wordIndex].slice(0, charIndex + 1));
+      charIndex++;
+
+      if (charIndex === typingWords[wordIndex].length) {
+        clearInterval(typingInterval);
+
+        setTimeout(() => {
+          setWordIndex((prev) => (prev + 1) % typingWords.length);
+          setTypedText("");
+        }, 1500);
+      }
+    }, 100);
+
+    return () => clearInterval(typingInterval);
+  }, [wordIndex]);
+
+  /* =======================
+    AUTO-SCROLL SLIDER
+     ======================= */
+  useEffect(() => {
+    const slider = sliderRef.current;
+    if (!slider) return;
+
+    const scrollSpeed = 1;
+
+    const scrollInterval = setInterval(() => {
+      if (isHovering) return;
+
+      slider.scrollLeft += scrollSpeed;
+
+      if (
+        slider.scrollLeft + slider.clientWidth >=
+        slider.scrollWidth
+      ) {
+        slider.scrollLeft = 0;
+      }
+    }, 20);
+
+    return () => clearInterval(scrollInterval);
+  }, [isHovering]);
 
   return (
     <div className="min-h-screen flex flex-col bg-gray-50">
       <Navbar />
-      
+
       <main className="flex-grow">
-        {/* Hero Section */}
-        <section className="bg-gradient-to-br from-primary via-primary/90 to-primary/80 text-white py-20 relative overflow-hidden">
-          <div className="absolute inset-0 bg-black/10"></div>
-          <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-left">
-            <h1 className="text-5xl md:text-7xl font-bold mb-6 leading-tight">
-              Find Your Perfect
-              <span className="block text-accent">Kost</span>
-            </h1>
-            <p className="text-xl md:text-2xl mb-10 text-white/90 max-w-3xl mx-auto leading-tight">
-              Discover comfortable and affordable living spaces with modern facilities and strategic locations
-            </p>
-            <div className="inline-flex items-center bg-white/10 backdrop-blur-sm text-white px-8 py-4 rounded-full font-semibold text-lg border border-white/20">
-              <div className="bg-accent w-3 h-3 rounded-full mr-3 animate-pulse"></div>
-              {kostData.length} Available Kost
-            </div>
-          </div>
-          
-          {/* Decorative elements */}
-          <div className="absolute top-10 left-10 w-20 h-20 bg-white/10 rounded-full blur-xl"></div>
-          <div className="absolute bottom-10 right-10 w-32 h-32 bg-accent/20 rounded-full blur-2xl"></div>
-        </section>
+        {/* HERO SECTION */}
+        <section className="bg-gray-50 py-24">
+          <div className="max-w-7xl mx-auto px-4 grid grid-cols-1 lg:grid-cols-2 gap-14 items-center">
 
-        {/* Stats Section */}
-        <section className="py-16 bg-white">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
-              <div className="p-6">
-                <div className="text-4xl font-bold text-primary mb-2">100+</div>
-                <div className="text-gray-600">Verified Kost</div>
-              </div>
-              <div className="p-6">
-                <div className="text-4xl font-bold text-primary mb-2">50+</div>
-                <div className="text-gray-600">Locations</div>
-              </div>
-              <div className="p-6">
-                <div className="text-4xl font-bold text-primary mb-2">1000+</div>
-                <div className="text-gray-600">Happy Tenants</div>
-              </div>
-            </div>
-          </div>
-        </section>
+            {/* LEFT SIDE */}
+            <div>
+              <h1 className="text-5xl md:text-6xl font-bold leading-tight mb-6">
+                Find Your <br />
+                <span className="text-primary">{typedText}</span>
+              </h1>
 
-        {/* Kost Catalog */}
-        <section className="py-16 bg-gray-50">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center mb-16">
-              <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
-                Available Kost Rooms
-              </h2>
-              <p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
-                Browse through our carefully selected kost accommodations with various facilities and price ranges
+              <p className="text-gray-600 text-lg mb-10 max-w-md">
+                Discover comfortable and affordable living spaces with modern
+                facilities and strategic locations.
               </p>
+
+              <div className="flex gap-4">
+                <button className="bg-primary text-white px-6 py-3 rounded-lg font-semibold hover:bg-primary/90">
+                  Explore Kost
+                </button>
+                <button className="border border-primary text-primary px-6 py-3 rounded-lg font-semibold hover:bg-primary hover:text-white">
+                  Contact via WhatsApp
+                </button>
+              </div>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-              {kostData.map((kost) => (
-                <ProductCard key={kost.id} kost={kost} />
-              ))}
-            </div>
-          </div>
-        </section>
+            {/* RIGHT SIDE */}
+            <div>
+              <h2 className="text-4xl font-bold text-primary mb-6">
+                UP TO 50% OFF
+              </h2>
 
-        {/* CTA Section */}
-        <section className="py-20 bg-primary text-white">
-          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <h2 className="text-4xl font-bold mb-6">Ready to Find Your Dream Kost?</h2>
-            <p className="text-xl mb-8 text-white/90">
-              Join thousands of satisfied tenants who found their perfect home with us
-            </p>
-            <button className="bg-accent hover:bg-accent/90 text-white font-bold py-4 px-8 rounded-full text-lg transition-all duration-200 shadow-lg hover:shadow-xl">
-              Get Started Today
-            </button>
+              <div
+                ref={sliderRef}
+                onMouseEnter={() => setIsHovering(true)}
+                onMouseLeave={() => setIsHovering(false)}
+                className="flex gap-6 overflow-x-auto pb-4 scroll-smooth"
+              >
+                {kostDiscountData.map((kost) => (
+                  <div
+                    key={kost.id}
+                    className="min-w-[280px] bg-white rounded-xl shadow-md overflow-hidden"
+                  >
+                    <img
+                      src={kost.image}
+                      alt={kost.name}
+                      className="h-40 w-full object-cover"
+                    />
+
+                    <div className="p-4">
+                      <h3 className="font-bold text-lg">{kost.name}</h3>
+                      <p className="text-sm text-gray-500 mb-2">
+                        {kost.city}
+                      </p>
+
+                      <div className="flex items-center gap-2 mb-3">
+                        <span className="line-through text-gray-400 text-sm">
+                          Rp {kost.priceBefore.toLocaleString()}
+                        </span>
+                        <span className="text-primary font-bold">
+                          Rp {kost.priceAfter.toLocaleString()}
+                        </span>
+                      </div>
+
+                      <button className="w-full border border-primary text-primary py-2 rounded-lg hover:bg-primary hover:text-white text-sm font-semibold">
+                        View Detail
+                      </button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
           </div>
         </section>
       </main>
