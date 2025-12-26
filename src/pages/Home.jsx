@@ -2,7 +2,7 @@ import {useEffect, useState } from 'react';
 import Navbar from '@/components/public/Navbar';
 import ProductCard from '@/components/public/ProductCard';
 import Footer from '@/components/public/Footer';
-import { kostData } from "@/data/kostData";
+// import { kostData } from "@/data/kostData";
 
 const Home = () => {
   const [kostData] = useState([
@@ -58,12 +58,12 @@ const Home = () => {
         {/* Hero Section */}
         <section className="bg-gradient-to-br from-primary via-primary/90 to-primary/80 text-white py-20 relative overflow-hidden">
           <div className="absolute inset-0 bg-black/10"></div>
-          <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-left">
             <h1 className="text-5xl md:text-7xl font-bold mb-6 leading-tight">
               Find Your Perfect
               <span className="block text-accent">Kost</span>
             </h1>
-            <p className="text-xl md:text-2xl mb-10 text-white/90 max-w-3xl mx-auto leading-relaxed">
+            <p className="text-xl md:text-2xl mb-10 text-white/90 max-w-3xl mx-auto leading-tight">
               Discover comfortable and affordable living spaces with modern facilities and strategic locations
             </p>
             <div className="inline-flex items-center bg-white/10 backdrop-blur-sm text-white px-8 py-4 rounded-full font-semibold text-lg border border-white/20">
