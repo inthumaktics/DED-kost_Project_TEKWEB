@@ -12,7 +12,7 @@ const DataTable = ({ kosts, onDeleteKost }) => {
         <h2 className="text-2xl font-bold text-gray-800">Daftar Kost</h2>
         <p className="text-gray-600">Total: {kosts.length} kost terdaftar</p>
       </div>
-      
+        
       <div className="overflow-x-auto">
         <table className="min-w-full divide-y divide-gray-200">
           <thead className="bg-gray-50">
