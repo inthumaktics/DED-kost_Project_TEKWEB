@@ -4,6 +4,7 @@ import Detail from './pages/Detail';
 import AdminLogin from './pages/AdminLogin';
 import AdminDashboard from './pages/AdminDashboard';
 import Login from './pages/Login';
+import Signup from './pages/Signup';
 
 function App() {
   return (
