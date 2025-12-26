@@ -6,7 +6,7 @@ export const kostDiscountData = [
     priceBefore: 1500000,
     priceAfter: 750000,
     discount: 50,
-    image: "public/images/kost-1.png",
+    image: "images/kost-1.png",
   },
   {
     id: 2,
@@ -15,7 +15,7 @@ export const kostDiscountData = [
     priceBefore: 1200000,
     priceAfter: 900000,
     discount: 25,
-    image: "public/images/kost-2.png",
+    image: "images/kost-2.png",
   },
   {
     id: 3,
@@ -24,7 +24,7 @@ export const kostDiscountData = [
     priceBefore: 1800000,
     priceAfter: 990000,
     discount: 45,
-    image: "public/images/kost-3.png",
+    image: "images/kost-3.png",
   },
   {
     id: 4,
@@ -33,7 +33,7 @@ export const kostDiscountData = [
     priceBefore: 1000000,
     priceAfter: 700000,
     discount: 30,
-    image: "public/images/kost-4.png",
+    image: "images/kost-4.png",
   },
   {
     id: 5,
@@ -42,6 +42,6 @@ export const kostDiscountData = [
     priceBefore: 2000000,
     priceAfter: 1200000,
     discount: 40,
-    image: "public/images/kost-6.png",
+    image: "images/kost-6.png",
   },
 ];
