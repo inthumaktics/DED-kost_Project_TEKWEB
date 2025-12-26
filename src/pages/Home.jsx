@@ -112,7 +112,7 @@ const Home = () => {
                     className="min-w-[280px] bg-white rounded-xl shadow-md overflow-hidden"
                   >
                     <img
-                      src={`$(import.meta.env.BASE_URL}${kost.image}`}
+                      src={`${import.meta.env.BASE_URL}${kost.image}`}
                       alt={kost.name}
                       className="h-40 w-full object-cover"
                     />
