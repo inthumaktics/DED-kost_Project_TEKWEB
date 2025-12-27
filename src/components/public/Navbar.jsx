@@ -24,7 +24,7 @@ const Navbar = () => {
   <div className="ml-10 flex items-center space-x-2">
 
     {/* Main Menu */}
-    {["Home", "Explore", "Promotions", "About"].map((item) => (
+    {["Home", "Explore", "Promotions", "About Us"].map((item) => (
       <Link
         key={item}
         to={item === "Home" ? "/" : `/${item.toLowerCase()}`}
