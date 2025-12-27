@@ -60,3 +60,5 @@ export const kostDiscountData = [
     image: "images/kost-6.png",
   },
 ];
+
+export default kostDiscountData;  
