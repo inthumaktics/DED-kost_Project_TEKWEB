@@ -1,72 +1,121 @@
-// src/hooks/useFetch.js
-import { useState, useEffect } from 'react';
-import dummyKosts from '../data/dummyKosts';
+import { useState, useEffect, useCallback } from 'react';
 
-/**
- * Custom Hook untuk fetching data - Checkpoint 1 (Data Dummy)
- * Digunakan oleh Anggota A di Home.jsx dan Detail.jsx
- */
-const useFetch = (endpoint = '') => {
-  const [data, setData] = useState([]);
+
+const useFetch = (url, options = {}) => {
+  const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        setLoading(true);
-        
-        
-        // Simulasi network delay
-        await new Promise(resolve => setTimeout(resolve, 600));
-        
-        // Return data sesuai endpoint
-        if (endpoint.includes('/kosts') || endpoint === '') {
-          setData(dummyKosts);
-        } else {
-          // Default: return semua kosts
-          setData(dummyKosts);
-        }
-        
-        setError(null);
-      } catch (err) {
-        console.error('❌ Error fetching data:', err);
-        setError('Gagal memuat data. Silakan coba lagi.');
-        setData([]);
-      } finally {
-        setLoading(false);
+  const fetchData = useCallback(async () => {
+    try {
+      setLoading(true);
+      setError(null);
+      
+      const response = await fetch(url, {
+        headers: {
+          'Content-Type': 'application/json',
+          ...options.headers
+        },
+        ...options
+      });
+      
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
       }
-    };
-
-    fetchData();
-  }, [endpoint]);
-
-  // Fungsi untuk mengambil kost berdasarkan ID
-  const getKostById = (id) => {
-    return data.find(item => item.id === id) || null;
-  };
-
-  const filterKosts = (criteria = {}) => {
-    const { type, minPrice = 0, maxPrice = 5000000, available } = criteria;
-    
-    return data.filter(kost => {
-      let pass = true;
       
-      if (type && type !== 'Semua' && kost.type !== type) pass = false;
-      if (kost.price < minPrice || kost.price > maxPrice) pass = false;
-      if (available !== undefined && kost.available !== available) pass = false;
-      
-      return pass;
-    });
-  };
-
-  const refetch = () => {
-    setLoading(true);
-    setTimeout(() => {
-      setData([...dummyKosts]);
+      const result = await response.json();
+      setData(result);
+    } catch (err) {
+      setError(err.message || 'Terjadi kesalahan saat mengambil data');
+      console.error('Fetch error:', err);
+    } finally {
       setLoading(false);
-      console.log('✅ Data refreshed');
-    }, 300);
+    }
+  }, [url, options]);
+
+  useEffect(() => {
+    // Hanya fetch jika URL diberikan
+    if (url) {
+      fetchData();
+    }
+  }, [fetchData, url]);
+
+  // Function untuk manual refetch
+  const refetch = () => {
+    fetchData();
+  };
+
+  // Function untuk POST data
+  const postData = async (postUrl, postData) => {
+    try {
+      setLoading(true);
+      const response = await fetch(postUrl, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(postData)
+      });
+      
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+      
+      const result = await response.json();
+      return result;
+    } catch (err) {
+      setError(err.message);
+      throw err;
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Function untuk PUT/UPDATE data
+  const putData = async (putUrl, putData) => {
+    try {
+      setLoading(true);
+      const response = await fetch(putUrl, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(putData)
+      });
+      
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+      
+      const result = await response.json();
+      return result;
+    } catch (err) {
+      setError(err.message);
+      throw err;
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Function untuk DELETE data
+  const deleteData = async (deleteUrl) => {
+    try {
+      setLoading(true);
+      const response = await fetch(deleteUrl, {
+        method: 'DELETE',
+      });
+      
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+      
+      return { success: true };
+    } catch (err) {
+      setError(err.message);
+      throw err;
+    } finally {
+      setLoading(false);
+    }
   };
 
   return {
@@ -74,8 +123,9 @@ const useFetch = (endpoint = '') => {
     loading,
     error,
     refetch,
-    getKostById,
-    filterKosts
+    postData,
+    putData,
+    deleteData
   };
 };
 
