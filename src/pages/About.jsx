@@ -1,5 +1,7 @@
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
+import ContactForm from "@/components/layout/ContactForm";
+
 
 const AboutUs = () => {
   return (
@@ -39,7 +41,6 @@ const AboutUs = () => {
               </p>
             </div>
 
-            {/* ILLUSTRATION / IMAGE PLACEHOLDER */}
             <div className="bg-white rounded-xl shadow-md p-8 text-center">
               <p className="text-6xl mb-4">🏠</p>
               <h3 className="font-semibold text-lg mb-2">
@@ -122,6 +123,33 @@ const AboutUs = () => {
             </div>
           </div>
         </section>
+
+          {/* CONTACT US */}
+          <section className="bg-gray-50">
+            <div className="max-w-7xl mx-auto px-4 py-20">
+              <div className="grid md:grid-cols-2 gap-12 items-center">
+                {/* LEFT TEXT */}
+                <div>
+                  <h2 className="text-3xl font-bold mb-4">
+                    Hubungi Kami
+                  </h2>
+                  <p className="text-gray-600 mb-6">
+                    Kami siap membantu kamu menemukan kost terbaik.
+                    Silakan isi formulir dan tim DED-Kost akan menghubungi kamu.
+                  </p>
+
+                  <ul className="text-gray-600 space-y-2 text-sm">
+                    <li>📧 support@ded-kost.com</li>
+                    <li>💬 WhatsApp: +62 812-3456-7890</li>
+                    <li>📍 Yogyakarta, Indonesia</li>
+                  </ul>
+                </div>
+
+                {/* RIGHT FORM */}
+                <ContactForm />
+              </div>
+            </div>
+          </section>
       </main>
 
       <Footer />

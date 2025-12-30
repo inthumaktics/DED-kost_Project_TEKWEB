@@ -3,6 +3,11 @@ import { useEffect, useRef, useState } from "react";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import PromoSlider from "@/pages/PromoSlider";
+<<<<<<< HEAD
+=======
+import { kostDiscountData } from "@/data/kostDiscountData";
+import ContactForm from "@/components/layout/ContactForm";
+>>>>>>> ef0576f738dfb319f1fc41b5f4c81b8e4327ef41
 
 // typing words
 const typingWords = ["Perfect Kost", "Affordable Kost", "Comfortable Kost"];
@@ -325,11 +330,42 @@ const Home = ({ kosts = [] }) => {
                   </p>
                 </div>
               </div>
+<<<<<<< HEAD
 
             </div>
           </div>
         </section>
       </main>
+=======
+            </section>
+            {/* CONTACT US */}
+            <section className="bg-gray-50">
+              <div className="max-w-7xl mx-auto px-4 py-20">
+                <div className="grid md:grid-cols-2 gap-12 items-center">
+                  {/* LEFT TEXT */}
+                  <div>
+                    <h2 className="text-3xl font-bold mb-4">
+                      Hubungi Kami
+                    </h2>
+                    <p className="text-gray-600 mb-6">
+                      Kami siap membantu kamu menemukan kost terbaik.
+                      Silakan isi formulir dan tim DED-Kost akan menghubungi kamu.
+                    </p>
+
+                    <ul className="text-gray-600 space-y-2 text-sm">
+                      <li>📧 support@ded-kost.com</li>
+                      <li>💬 WhatsApp: +62 812-3456-7890</li>
+                      <li>📍 Yogyakarta, Indonesia</li>
+                    </ul>
+                  </div>
+
+                  {/* RIGHT FORM */}
+                  <ContactForm />
+                </div>
+              </div>
+            </section>
+
+>>>>>>> ef0576f738dfb319f1fc41b5f4c81b8e4327ef41
 
       <Footer />
     </div>
