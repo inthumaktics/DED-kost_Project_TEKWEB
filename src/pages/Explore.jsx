@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
-import Navbar from "@/components/public/Navbar";
-import Footer from "@/components/public/Footer";
+import Navbar from "@/components/layout/Navbar";
+import Footer from "@/components/layout/Footer";
 import { kostDiscountData } from "@/data/kostDiscountData";
 
 const Explore = () => {
@@ -12,9 +12,7 @@ const Explore = () => {
         <section className="max-w-7xl mx-auto px-4 py-16">
           {/* HEADER */}
           <div className="mb-10 text-center">
-            <h1 className="text-4xl font-bold mb-2">
-              Explore Kost
-            </h1>
+            <h1 className="text-4xl font-bold mb-2">Explore Kost</h1>
             <p className="text-gray-500">
               Temukan kost terbaik sesuai kebutuhanmu
             </p>
@@ -36,17 +34,11 @@ const Explore = () => {
 
                 {/* CONTENT */}
                 <div className="p-5">
-                  <h3 className="font-bold text-lg mb-1">
-                    {kost.name}
-                  </h3>
+                  <h3 className="font-bold text-lg mb-1">{kost.name}</h3>
 
-                  <p className="text-sm text-gray-500 mb-1">
-                    📍 {kost.city}
-                  </p>
+                  <p className="text-sm text-gray-500 mb-1">📍 {kost.city}</p>
 
-                  <p className="text-sm text-gray-400 mb-3">
-                    {kost.address}
-                  </p>
+                  <p className="text-sm text-gray-400 mb-3">{kost.address}</p>
 
                   {/* TYPE */}
                   <span className="inline-block bg-blue-100 text-blue-600 text-xs font-semibold px-3 py-1 rounded-full mb-3">

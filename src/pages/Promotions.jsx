@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
-import Navbar from "@/components/public/Navbar";
-import Footer from "@/components/public/Footer";
+import Navbar from "@/components/layout/Navbar";
+import Footer from "@/components/layout/Footer";
 import { kostDiscountData } from "@/data/kostDiscountData";
 
 /* ===== SLIDER SECTION ===== */
@@ -36,17 +36,11 @@ const PromoSlider = ({ title, subtitle, data }) => {
                 Diskon {kost.discount}%
               </span>
 
-              <h3 className="font-bold text-lg mb-1">
-                {kost.name}
-              </h3>
+              <h3 className="font-bold text-lg mb-1">{kost.name}</h3>
 
-              <p className="text-sm text-gray-500 mb-1">
-                📍 {kost.city}
-              </p>
+              <p className="text-sm text-gray-500 mb-1">📍 {kost.city}</p>
 
-              <p className="text-sm text-gray-400 mb-3">
-                {kost.address}
-              </p>
+              <p className="text-sm text-gray-400 mb-3">{kost.address}</p>
 
               {/* TYPE */}
               <span className="inline-block bg-blue-100 text-blue-600 text-xs font-semibold px-3 py-1 rounded-full mb-3">
@@ -81,19 +75,15 @@ const PromoSlider = ({ title, subtitle, data }) => {
 /* ===== PAGE ===== */
 const Promotions = () => {
   // 🔥 Promo Hari Ini
-  const promoToday = kostDiscountData.filter(
-    (kost) => kost.discount > 0
-  );
+  const promoToday = kostDiscountData.filter((kost) => kost.discount > 0);
 
   // 🎆 Promo Spesial Tahun Baru
-  const promoNewYear = kostDiscountData.filter(
-    (kost) => kost.tags?.includes("new-year")
+  const promoNewYear = kostDiscountData.filter((kost) =>
+    kost.tags?.includes("new-year")
   );
 
   // 📍 Promo Berdasarkan Lokasi (contoh)
-  const promoNearby = kostDiscountData.filter(
-    (kost) => kost.city === "Sleman"
-  );
+  const promoNearby = kostDiscountData.filter((kost) => kost.city === "Sleman");
 
   return (
     <div className="min-h-screen flex flex-col bg-gray-50">
@@ -103,9 +93,7 @@ const Promotions = () => {
         <section className="max-w-7xl mx-auto px-4 py-16">
           {/* PAGE HEADER */}
           <div className="mb-14 text-center">
-            <h1 className="text-4xl font-bold mb-2">
-              Promotions
-            </h1>
+            <h1 className="text-4xl font-bold mb-2">Promotions</h1>
             <p className="text-gray-500">
               Promo kost terbaik yang sayang untuk dilewatkan
             </p>

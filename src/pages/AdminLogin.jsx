@@ -1,43 +1,46 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import Navbar from '@/components/public/Navbar';
-import Footer from '@/components/public/Footer';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import Navbar from "@/components/layout/Navbar";
+import Footer from "@/components/layout/Footer";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
 
 const AdminLogin = () => {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
-    email: '',
-    password: ''
+    email: "",
+    password: "",
   });
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    
+
     // Credentials admin sederhana (untung demo)
-    if (formData.email === 'admin@ded-kost.com' && formData.password === 'admin123') {
-      localStorage.setItem('isAdminLoggedIn', 'true');
-      navigate('/admin/dashboard');
+    if (
+      formData.email === "admin@ded-kost.com" &&
+      formData.password === "admin123"
+    ) {
+      localStorage.setItem("isAdminLoggedIn", "true");
+      navigate("/admin/dashboard");
     } else {
-      setError('Email atau password salah!');
+      setError("Email atau password salah!");
     }
   };
 
   const handleChange = (e) => {
     setFormData({
       ...formData,
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
     });
-    setError('');
+    setError("");
   };
 
   return (
     <div className="min-h-screen flex flex-col bg-gray-50">
       <Navbar />
-      
+
       <main className="flex-grow flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
         <div className="max-w-md w-full space-y-8">
           <div className="text-center">
@@ -107,7 +110,7 @@ const AdminLogin = () => {
                 <div className="text-center">
                   <button
                     type="button"
-                    onClick={() => navigate('/')}
+                    onClick={() => navigate("/")}
                     className="text-sm text-gray-600 hover:text-primary"
                   >
                     Kembali ke Halaman Utama

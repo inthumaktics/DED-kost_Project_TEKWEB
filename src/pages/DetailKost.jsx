@@ -1,23 +1,19 @@
 import { useParams, Link } from "react-router-dom";
-import Navbar from "@/components/public/Navbar";
-import Footer from "@/components/public/Footer";
+import Navbar from "@/components/layout/Navbar";
+import Footer from "@/components/layout/Footer";
 import { kostDiscountData } from "@/data/kostDiscountData";
 
 const DetailKost = () => {
   const { id } = useParams();
 
-  const kost = kostDiscountData.find(
-    (item) => item.id === Number(id)
-  );
+  const kost = kostDiscountData.find((item) => item.id === Number(id));
 
   if (!kost) {
     return (
       <div className="min-h-screen flex flex-col bg-gray-50">
         <Navbar />
         <div className="flex-grow flex items-center justify-center">
-          <p className="text-gray-500 text-lg">
-            Kost tidak ditemukan 😢
-          </p>
+          <p className="text-gray-500 text-lg">Kost tidak ditemukan 😢</p>
         </div>
         <Footer />
       </div>
@@ -49,14 +45,10 @@ const DetailKost = () => {
             {/* CONTENT */}
             <div className="p-8">
               {/* NAME */}
-              <h1 className="text-3xl font-bold mb-2">
-                {kost.name}
-              </h1>
+              <h1 className="text-3xl font-bold mb-2">{kost.name}</h1>
 
               {/* CITY */}
-              <p className="text-gray-500 mb-1">
-                📍 {kost.city}
-              </p>
+              <p className="text-gray-500 mb-1">📍 {kost.city}</p>
 
               {/* ADDRESS */}
               <p className="text-sm text-gray-400 mb-3">
@@ -91,9 +83,7 @@ const DetailKost = () => {
 
               {/* FACILITIES */}
               <div className="mb-6">
-                <h3 className="font-semibold mb-2">
-                  Facilities
-                </h3>
+                <h3 className="font-semibold mb-2">Facilities</h3>
 
                 {kost.facilities && kost.facilities.length > 0 ? (
                   <ul className="grid grid-cols-2 gap-2 text-sm text-gray-600">
@@ -115,9 +105,9 @@ const DetailKost = () => {
 
               {/* DESCRIPTION */}
               <p className="text-gray-600 mb-8">
-                Kost nyaman dengan fasilitas lengkap dan lingkungan
-                aman. Cocok untuk mahasiswa maupun pekerja dengan
-                lokasi strategis di {kost.city}.
+                Kost nyaman dengan fasilitas lengkap dan lingkungan aman. Cocok
+                untuk mahasiswa maupun pekerja dengan lokasi strategis di{" "}
+                {kost.city}.
               </p>
 
               {/* ACTION */}

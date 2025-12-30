@@ -1,5 +1,5 @@
-import Navbar from "@/components/public/Navbar";
-import Footer from "@/components/public/Footer";
+import Navbar from "@/components/layout/Navbar";
+import Footer from "@/components/layout/Footer";
 
 const AboutUs = () => {
   return (
@@ -14,9 +14,9 @@ const AboutUs = () => {
               Tentang DED-Kost
             </h1>
             <p className="max-w-2xl mx-auto text-lg text-white/90">
-              Platform pencarian kost yang dirancang untuk membantu
-              mahasiswa dan pekerja menemukan hunian terbaik dengan
-              cara yang mudah, cepat, dan transparan.
+              Platform pencarian kost yang dirancang untuk membantu mahasiswa
+              dan pekerja menemukan hunian terbaik dengan cara yang mudah,
+              cepat, dan transparan.
             </p>
           </div>
         </section>
@@ -25,19 +25,17 @@ const AboutUs = () => {
         <section className="max-w-7xl mx-auto px-4 py-20">
           <div className="grid md:grid-cols-2 gap-12 items-center">
             <div>
-              <h2 className="text-3xl font-bold mb-4">
-                Siapa Kami?
-              </h2>
+              <h2 className="text-3xl font-bold mb-4">Siapa Kami?</h2>
               <p className="text-gray-600 mb-4 leading-relaxed">
-                DED-Kost adalah aplikasi web yang dikembangkan sebagai
-                solusi digital untuk mempermudah pencarian kost.
-                Kami memahami bahwa mencari tempat tinggal bukan hanya
-                soal harga, tapi juga kenyamanan, lokasi, dan keamanan.
+                DED-Kost adalah aplikasi web yang dikembangkan sebagai solusi
+                digital untuk mempermudah pencarian kost. Kami memahami bahwa
+                mencari tempat tinggal bukan hanya soal harga, tapi juga
+                kenyamanan, lokasi, dan keamanan.
               </p>
               <p className="text-gray-600 leading-relaxed">
-                Oleh karena itu, DED-Kost hadir dengan fitur eksplorasi,
-                promo menarik, dan detail kost yang transparan untuk
-                membantu pengguna membuat keputusan terbaik.
+                Oleh karena itu, DED-Kost hadir dengan fitur eksplorasi, promo
+                menarik, dan detail kost yang transparan untuk membantu pengguna
+                membuat keputusan terbaik.
               </p>
             </div>
 
@@ -48,8 +46,8 @@ const AboutUs = () => {
                 Hunian Nyaman untuk Semua
               </h3>
               <p className="text-gray-500 text-sm">
-                Kami percaya setiap orang berhak mendapatkan
-                tempat tinggal yang layak dan nyaman.
+                Kami percaya setiap orang berhak mendapatkan tempat tinggal yang
+                layak dan nyaman.
               </p>
             </div>
           </div>
@@ -62,9 +60,9 @@ const AboutUs = () => {
               <div className="border rounded-xl p-8 hover:shadow-md transition">
                 <h3 className="text-2xl font-bold mb-3">🎯 Visi</h3>
                 <p className="text-gray-600 leading-relaxed">
-                  Menjadi platform pencarian kost yang terpercaya dan
-                  menjadi pilihan utama bagi mahasiswa serta pekerja
-                  di berbagai kota di Indonesia.
+                  Menjadi platform pencarian kost yang terpercaya dan menjadi
+                  pilihan utama bagi mahasiswa serta pekerja di berbagai kota di
+                  Indonesia.
                 </p>
               </div>
 
@@ -84,9 +82,7 @@ const AboutUs = () => {
         {/* VALUES */}
         <section className="max-w-7xl mx-auto px-4 py-20">
           <div className="text-center mb-14">
-            <h2 className="text-3xl font-bold mb-2">
-              Nilai yang Kami Pegang
-            </h2>
+            <h2 className="text-3xl font-bold mb-2">Nilai yang Kami Pegang</h2>
             <p className="text-gray-500">
               Prinsip yang menjadi dasar pengembangan DED-Kost
             </p>

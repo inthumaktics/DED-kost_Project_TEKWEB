@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { useEffect, useRef, useState } from "react";
-import Navbar from "@/components/public/Navbar";
-import Footer from "@/components/public/Footer";
+import Navbar from "@/components/layout/Navbar";
+import Footer from "@/components/layout/Footer";
 import { kostDiscountData } from "@/data/kostDiscountData";
 
 // typing words
@@ -97,7 +97,6 @@ const Home = () => {
         {/* ================= HERO SECTION ================= */}
         <section className="bg-gray-50 py-10">
           <div className="max-w-7xl mx-auto px-4 grid grid-cols-1 lg:grid-cols-2 gap-14 items-start">
-
             {/* LEFT SIDE */}
             <div className="lg:-mt-10">
               <h1 className="text-20xl md:text-6xl font-bold leading-tight mb-10">
@@ -161,86 +160,6 @@ const Home = () => {
                           </span>
                         </div>
 
-                    <Link
-                          to={`/kost/${kost.id}`}
-                          className="block text-center w-full border border-primary text-primary py-2 rounded-lg hover:bg-primary hover:text-white text-sm font-semibold">
-                          View Detail
-                          </Link>
-                      </div>
-                    </div>
-                  ))
-                ) : (
-                  <p className="text-gray-500 mt-6">
-                    No kost found 😢
-                  </p>
-                )}
-              </div>
-            </div>
-
-          </div>
-        </section>
-        {/* ================= PREVIEW EXPLORE ================= */}
-            <section className="bg-white py-20">
-              <div className="max-w-7xl mx-auto px-4">
-
-                {/* HEADER */}
-                <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-10">
-                  <div>
-                    <h2 className="text-3xl font-bold mb-2">
-                      Explore Kost
-                    </h2>
-                    <p className="text-gray-500">
-                      Pilihan kost terbaik untuk kamu
-                    </p>
-                  </div>
-
-                  <Link
-                    to="/explore"
-                    className="mt-4 md:mt-0 text-primary font-semibold hover:underline"
-                  >
-                    See all kost →
-                  </Link>
-                </div>
-
-                {/* GRID PREVIEW */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-                  {previewKost.map((kost) => (
-                    <div
-                      key={kost.id}
-                      className="bg-gray-50 rounded-xl shadow-sm hover:shadow-md transition overflow-hidden"
-                    >
-                      {/* IMAGE */}
-                      <img
-                        src={`${import.meta.env.BASE_URL}${kost.image}`}
-                        alt={kost.name}
-                        className="h-40 w-full object-cover"
-                      />
-
-                      {/* CONTENT */}
-                      <div className="p-4">
-                        <h3 className="font-semibold text-lg mb-1">
-                          {kost.name}
-                        </h3>
-
-                        <p className="text-sm text-gray-500 mb-1">
-                          📍 {kost.city}
-                        </p>
-
-                        <span className="inline-block bg-blue-100 text-blue-600 text-xs font-semibold px-3 py-1 rounded-full mb-2">
-                          {kost.type}
-                        </span>
-
-                        <div className="flex items-center gap-2 mb-3">
-                          {kost.discount > 0 && (
-                            <span className="line-through text-gray-400 text-sm">
-                              Rp {kost.priceBefore.toLocaleString("id-ID")}
-                            </span>
-                          )}
-                          <span className="text-primary font-bold">
-                            Rp {kost.priceAfter.toLocaleString("id-ID")}
-                          </span>
-                        </div>
-
                         <Link
                           to={`/kost/${kost.id}`}
                           className="block text-center w-full border border-primary text-primary py-2 rounded-lg hover:bg-primary hover:text-white text-sm font-semibold"
@@ -249,13 +168,80 @@ const Home = () => {
                         </Link>
                       </div>
                     </div>
-                  ))}
-                </div>
+                  ))
+                ) : (
+                  <p className="text-gray-500 mt-6">No kost found 😢</p>
+                )}
               </div>
-            </section>
+            </div>
+          </div>
+        </section>
+        {/* ================= PREVIEW EXPLORE ================= */}
+        <section className="bg-white py-20">
+          <div className="max-w-7xl mx-auto px-4">
+            {/* HEADER */}
+            <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-10">
+              <div>
+                <h2 className="text-3xl font-bold mb-2">Explore Kost</h2>
+                <p className="text-gray-500">Pilihan kost terbaik untuk kamu</p>
+              </div>
 
+              <Link
+                to="/explore"
+                className="mt-4 md:mt-0 text-primary font-semibold hover:underline"
+              >
+                See all kost →
+              </Link>
+            </div>
+
+            {/* GRID PREVIEW */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+              {previewKost.map((kost) => (
+                <div
+                  key={kost.id}
+                  className="bg-gray-50 rounded-xl shadow-sm hover:shadow-md transition overflow-hidden"
+                >
+                  {/* IMAGE */}
+                  <img
+                    src={`${import.meta.env.BASE_URL}${kost.image}`}
+                    alt={kost.name}
+                    className="h-40 w-full object-cover"
+                  />
+
+                  {/* CONTENT */}
+                  <div className="p-4">
+                    <h3 className="font-semibold text-lg mb-1">{kost.name}</h3>
+
+                    <p className="text-sm text-gray-500 mb-1">📍 {kost.city}</p>
+
+                    <span className="inline-block bg-blue-100 text-blue-600 text-xs font-semibold px-3 py-1 rounded-full mb-2">
+                      {kost.type}
+                    </span>
+
+                    <div className="flex items-center gap-2 mb-3">
+                      {kost.discount > 0 && (
+                        <span className="line-through text-gray-400 text-sm">
+                          Rp {kost.priceBefore.toLocaleString("id-ID")}
+                        </span>
+                      )}
+                      <span className="text-primary font-bold">
+                        Rp {kost.priceAfter.toLocaleString("id-ID")}
+                      </span>
+                    </div>
+
+                    <Link
+                      to={`/kost/${kost.id}`}
+                      className="block text-center w-full border border-primary text-primary py-2 rounded-lg hover:bg-primary hover:text-white text-sm font-semibold"
+                    >
+                      View Detail
+                    </Link>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
       </main>
-      
 
       <Footer />
     </div>
