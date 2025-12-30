@@ -1,25 +1,4 @@
 import { useState } from 'react'
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from '@/components/ui/table'
-import { Button } from '@/components/ui/button'
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-} from '@/components/ui/alert-dialog'
-import { Badge } from '@/components/ui/badge'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 
 const DataTable = ({ kosts, onDeleteKost }) => {
   const [deleteModal, setDeleteModal] = useState({
@@ -57,200 +36,186 @@ const DataTable = ({ kosts, onDeleteKost }) => {
 
   return (
     <>
-      <Card className="shadow-lg border-0">
-        <CardHeader>
-          <CardTitle className="text-2xl">Daftar Kost</CardTitle>
-          <CardDescription>
-            Total: {kosts.length} kost terdaftar
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className="rounded-md border">
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead className="w-[250px]">Nama Kost</TableHead>
-                  <TableHead>Lokasi</TableHead>
-                  <TableHead className="text-right">Harga</TableHead>
-                  <TableHead>Fasilitas</TableHead>
-                  <TableHead className="text-right">Aksi</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {kosts.length === 0 ? (
-                  <TableRow>
-                    <TableCell colSpan={5} className="text-center py-8 text-muted-foreground">
-                      Belum ada data kost
-                    </TableCell>
-                  </TableRow>
-                ) : (
-                  kosts.map((kost) => (
-                    <TableRow key={kost.id} className="group hover:bg-muted/50">
-                      <TableCell className="font-medium">
-                        <div className="flex items-center gap-3">
-                          <div className="h-10 w-10 flex-shrink-0">
-                            <img
-                              className="h-10 w-10 rounded-lg object-cover border"
-                              src={kost.image}
-                              alt={kost.name}
-                            />
-                          </div>
-                          <div>
-                            <p className="font-semibold">{kost.name}</p>
-                            <p className="text-xs text-muted-foreground">
-                              ID: {kost.id}
-                            </p>
-                          </div>
-                        </div>
-                      </TableCell>
-                      <TableCell>
-                        <div className="space-y-1">
-                          <p className="text-sm">{kost.location}</p>
-                          {kost.city && (
-                            <Badge variant="outline" className="text-xs">
-                              {kost.city}
-                            </Badge>
-                          )}
-                        </div>
-                      </TableCell>
-                      <TableCell className="text-right">
-                        <div className="space-y-1">
-                          <p className="font-bold text-primary">
-                            Rp {kost.price.toLocaleString()}
-                          </p>
-                          {kost.discount > 0 && (
-                            <p className="text-xs text-muted-foreground line-through">
-                              Rp {kost.originalPrice?.toLocaleString()}
-                            </p>
-                          )}
-                        </div>
-                      </TableCell>
-                      <TableCell>
-                        <div className="flex flex-wrap gap-1">
-                          {kost.facilities.slice(0, 2).map((facility, index) => (
-                            <Badge 
-                              key={index}
-                              variant="secondary"
-                              className="text-xs"
-                            >
-                              {facility}
-                            </Badge>
-                          ))}
-                          {kost.facilities.length > 2 && (
-                            <Badge variant="outline" className="text-xs">
-                              +{kost.facilities.length - 2}
-                            </Badge>
-                          )}
-                        </div>
-                      </TableCell>
-                      <TableCell className="text-right">
-                        <div className="flex justify-end gap-2">
-                          <Button
-                            variant="outline"
-                            size="sm"
-                            onClick={() => console.log(`Edit kost ${kost.id}`)}
-                            className="h-8 px-3"
-                          >
-                            Edit
-                          </Button>
-                          <Button
-                            variant="destructive"
-                            size="sm"
-                            onClick={() => handleDeleteClick(kost.id)}
-                            className="h-8 px-3"
-                          >
-                            Hapus
-                          </Button>
-                        </div>
-                      </TableCell>
-                    </TableRow>
-                  ))
-                )}
-              </TableBody>
-            </Table>
-          </div>
-        </CardContent>
-      </Card>
-
-      {/* Shadcn UI Alert Dialog for Delete Confirmation */}
-      <AlertDialog open={deleteModal.isOpen} onOpenChange={handleCancelDelete}>
-        <AlertDialogContent className="sm:max-w-md">
-          <AlertDialogHeader>
-            <AlertDialogTitle className="flex items-center gap-2 text-destructive">
-              <svg 
-                className="h-5 w-5" 
-                fill="none" 
-                stroke="currentColor" 
-                viewBox="0 0 24 24"
-              >
-                <path 
-                  strokeLinecap="round" 
-                  strokeLinejoin="round" 
-                  strokeWidth="2" 
-                  d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.938 16.5c-.77.833.192 2.5 1.732 2.5z"
-                />
-              </svg>
-              Hapus Kost?
-            </AlertDialogTitle>
-            <AlertDialogDescription>
-              Tindakan ini tidak dapat dibatalkan. Kost akan dihapus secara permanen dari sistem.
-            </AlertDialogDescription>
-          </AlertDialogHeader>
+      <div className="bg-white rounded-xl shadow-lg overflow-hidden">
+        <div className="p-6 border-b">
+          <h2 className="text-2xl font-bold text-gray-800">Daftar Kost</h2>
+          <p className="text-gray-600">Total: {kosts.length} kost terdaftar</p>
+        </div>
           
-          {deleteModal.kostData && (
-            <div className="bg-muted/50 p-4 rounded-lg space-y-3">
-              <div className="flex items-center gap-3">
-                <img
-                  className="h-10 w-10 rounded-lg object-cover"
-                  src={deleteModal.kostData.image}
-                  alt={deleteModal.kostData.name}
-                />
-                <div className="space-y-1">
-                  <p className="font-semibold text-sm">
-                    {deleteModal.kostData.name}
-                  </p>
-                  <div className="flex items-center gap-2">
-                    <Badge variant="outline" className="text-xs">
-                      {deleteModal.kostData.location}
-                    </Badge>
-                    <span className="text-xs text-muted-foreground">
-                      Rp {deleteModal.kostData.price?.toLocaleString()}/bulan
-                    </span>
+        <div className="overflow-x-auto">
+          <table className="min-w-full divide-y divide-gray-200">
+            <thead className="bg-gray-50">
+              <tr>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Nama
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Lokasi
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Harga
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Fasilitas
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Aksi
+                </th>
+              </tr>
+            </thead>
+            <tbody className="bg-white divide-y divide-gray-200">
+              {kosts.map((kost) => (
+                <tr key={kost.id} className="hover:bg-gray-50">
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    <div className="flex items-center">
+                      <div className="h-10 w-10 flex-shrink-0">
+                        <img
+                          className="h-10 w-10 rounded-full object-cover"
+                          src={kost.image}
+                          alt={kost.name}
+                        />
+                      </div>
+                      <div className="ml-4">
+                        <div className="text-sm font-medium text-gray-900">
+                          {kost.name}
+                        </div>
+                      </div>
+                    </div>
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    <div className="text-sm text-gray-900">{kost.location}</div>
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    <div className="text-sm font-bold text-blue-600">
+                      Rp {kost.price.toLocaleString()}
+                    </div>
+                  </td>
+                  <td className="px-6 py-4">
+                    <div className="flex flex-wrap gap-1">
+                      {kost.facilities.slice(0, 2).map((facility, index) => (
+                        <span
+                          key={index}
+                          className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800"
+                        >
+                          {facility}
+                        </span>
+                      ))}
+                      {kost.facilities.length > 2 && (
+                        <span className="text-xs text-gray-500">
+                          +{kost.facilities.length - 2} more
+                        </span>
+                      )}
+                    </div>
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                    <button
+                      onClick={() => console.log(`Edit kost ${kost.id}`)}
+                      className="text-blue-600 hover:text-blue-900 mr-4 px-3 py-1 border border-blue-600 rounded-lg hover:bg-blue-50 transition"
+                    >
+                      Edit
+                    </button>
+                    <button
+                      onClick={() => handleDeleteClick(kost.id)}
+                      className="text-red-600 hover:text-red-900 px-3 py-1 border border-red-600 rounded-lg hover:bg-red-50 transition"
+                    >
+                      Hapus
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      {/* Modern Delete Confirmation Modal */}
+      {deleteModal.isOpen && (
+        <div className="fixed inset-0 z-50 overflow-y-auto">
+          <div className="flex items-center justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:block sm:p-0">
+            {/* Background overlay */}
+            <div 
+              className="fixed inset-0 transition-opacity bg-black bg-opacity-40 backdrop-blur-sm"
+              onClick={handleCancelDelete}
+            />
+            
+            {/* Modal */}
+            <span className="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">
+              &#8203;
+            </span>
+            
+            <div className="inline-block align-bottom bg-white rounded-2xl text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
+              <div className="bg-white px-6 pt-6 pb-4 sm:p-6 sm:pb-4">
+                <div className="sm:flex sm:items-start">
+                  <div className="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-red-100 sm:mx-0 sm:h-10 sm:w-10">
+                    <svg 
+                      className="h-6 w-6 text-red-600" 
+                      fill="none" 
+                      stroke="currentColor" 
+                      viewBox="0 0 24 24"
+                    >
+                      <path 
+                        strokeLinecap="round" 
+                        strokeLinejoin="round" 
+                        strokeWidth="2" 
+                        d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.938 16.5c-.77.833.192 2.5 1.732 2.5z"
+                      />
+                    </svg>
+                  </div>
+                  
+                  <div className="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
+                    <h3 className="text-lg leading-6 font-semibold text-gray-900">
+                      Hapus Kost?
+                    </h3>
+                    
+                    <div className="mt-2">
+                      <div className="bg-gray-50 p-4 rounded-lg border border-gray-200">
+                        <div className="flex items-center mb-2">
+                          <img
+                            className="h-8 w-8 rounded-full object-cover mr-3"
+                            src={deleteModal.kostData?.image}
+                            alt={deleteModal.kostData?.name}
+                          />
+                          <p className="text-sm font-medium text-gray-900">
+                            {deleteModal.kostData?.name}
+                          </p>
+                        </div>
+                        <div className="text-sm text-gray-600">
+                          <p><span className="font-medium">Lokasi:</span> {deleteModal.kostData?.location}</p>
+                          <p><span className="font-medium">Harga:</span> Rp {deleteModal.kostData?.price?.toLocaleString()}</p>
+                          <p className="mt-1 text-red-600">
+                            Data akan dihapus permanen dan tidak dapat dikembalikan.
+                          </p>
+                        </div>
+                      </div>
+                      
+                      <p className="text-sm text-gray-500 mt-4">
+                        Apakah Anda yakin ingin menghapus kost ini?
+                      </p>
+                    </div>
                   </div>
                 </div>
               </div>
               
-              <div className="text-sm space-y-1">
-                <div className="flex items-center gap-2">
-                  <span className="font-medium text-muted-foreground">Fasilitas:</span>
-                  <div className="flex flex-wrap gap-1">
-                    {deleteModal.kostData.facilities.slice(0, 3).map((facility, index) => (
-                      <span key={index} className="text-xs bg-secondary px-2 py-0.5 rounded">
-                        {facility}
-                      </span>
-                    ))}
-                    {deleteModal.kostData.facilities.length > 3 && (
-                      <span className="text-xs text-muted-foreground">
-                        +{deleteModal.kostData.facilities.length - 3}
-                      </span>
-                    )}
-                  </div>
-                </div>
+              <div className="bg-gray-50 px-6 py-4 sm:px-6 sm:flex sm:flex-row-reverse rounded-b-2xl">
+                <button
+                  type="button"
+                  onClick={handleConfirmDelete}
+                  className="w-full inline-flex justify-center rounded-lg border border-transparent shadow-sm px-4 py-2.5 bg-red-600 text-base font-medium text-white hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:ml-3 sm:w-auto sm:text-sm transition"
+                >
+                  Ya, Hapus Kost
+                </button>
+                <button
+                  type="button"
+                  onClick={handleCancelDelete}
+                  className="mt-3 w-full inline-flex justify-center rounded-lg border border-gray-300 shadow-sm px-4 py-2.5 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm transition"
+                >
+                  Batal
+                </button>
               </div>
             </div>
-          )}
-          
-          <AlertDialogFooter>
-            <AlertDialogCancel className="mt-2 sm:mt-0">Batal</AlertDialogCancel>
-            <AlertDialogAction 
-              onClick={handleConfirmDelete}
-              className="bg-destructive hover:bg-destructive/90"
-            >
-              Hapus Permanen
-            </AlertDialogAction>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
+          </div>
+        </div>
+      )}
     </>
   )
 }
