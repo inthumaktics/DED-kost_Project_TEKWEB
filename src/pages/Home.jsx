@@ -7,11 +7,9 @@ import { kostDiscountData } from "@/data/kostDiscountData";
 // typing words
 const typingWords = ["Perfect Kost", "Affordable Kost", "Comfortable Kost"];
 // preview kost for explore section
+const previewKost = kostDiscountData.slice(0, 4);
 
 const Home = () => {
-  const { kosts, loading, searchKost } = useKosts();
-  const previewKost = kosts.slice(0, 4);
-
   /* =======================
     STATE & REF
   ======================= */
@@ -69,20 +67,20 @@ const Home = () => {
   /* =======================
     SEARCH LOGIC
   ======================= */
-  const filteredKost = searchKost(search);
-  if (loading) {
+  const filteredKost = kostDiscountData.filter((kost) => {
+    const keyword = search.toLowerCase();
+
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <p className="text-gray-500 text-lg">Loading kost data...</p>
-      </div>
+      kost.name.toLowerCase().includes(keyword) ||
+      kost.city.toLowerCase().includes(keyword)
     );
-  }
+  });
 
   return (
     <div className="min-h-screen flex flex-col bg-gray-50">
       <Navbar />
 
-      {/* ======SEARCH BAR ======= */}
+      {/* ================= SEARCH BAR ================= */}
       <div className="bg-gray-50 py-8 shadow-sm">
         <div className="max-w-xl mx-auto px-4">
           <input
