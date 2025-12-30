@@ -1,12 +1,11 @@
 import { useParams, Link } from "react-router-dom";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
-import { kostDiscountData } from "@/data/kostDiscountData";
 
-const DetailKost = () => {
+const DetailKost = ({ kosts = [] }) => {
   const { id } = useParams();
 
-  const kost = kostDiscountData.find((item) => item.id === Number(id));
+  const kost = kosts.find((item) => item.id === Number(id));
 
   if (!kost) {
     return (
@@ -37,7 +36,7 @@ const DetailKost = () => {
           <div className="bg-white rounded-xl shadow-lg overflow-hidden grid grid-cols-1 md:grid-cols-2">
             {/* IMAGE */}
             <img
-              src={`${import.meta.env.BASE_URL}${kost.image}`}
+              src={kost.image}
               alt={kost.name}
               className="w-full h-full object-cover"
             />
@@ -48,7 +47,9 @@ const DetailKost = () => {
               <h1 className="text-3xl font-bold mb-2">{kost.name}</h1>
 
               {/* CITY */}
-              <p className="text-gray-500 mb-1">📍 {kost.city}</p>
+              <p className="text-gray-500 mb-1">
+                📍 {kost.city || kost.location}
+              </p>
 
               {/* ADDRESS */}
               <p className="text-sm text-gray-400 mb-3">
@@ -73,11 +74,11 @@ const DetailKost = () => {
               <div className="flex items-center gap-3 mb-6">
                 {kost.discount > 0 && (
                   <span className="line-through text-gray-400">
-                    Rp {kost.priceBefore.toLocaleString("id-ID")}
+                    Rp {kost.priceBefore ? kost.priceBefore.toLocaleString("id-ID") : (kost.price * 1.2).toLocaleString("id-ID")}
                   </span>
                 )}
                 <span className="text-2xl font-bold text-primary">
-                  Rp {kost.priceAfter.toLocaleString("id-ID")}
+                  Rp {kost.price ? kost.price.toLocaleString("id-ID") : (kost.priceAfter ? kost.priceAfter.toLocaleString("id-ID") : "0")}
                 </span>
               </div>
 
@@ -105,9 +106,7 @@ const DetailKost = () => {
 
               {/* DESCRIPTION */}
               <p className="text-gray-600 mb-8">
-                Kost nyaman dengan fasilitas lengkap dan lingkungan aman. Cocok
-                untuk mahasiswa maupun pekerja dengan lokasi strategis di{" "}
-                {kost.city}.
+                {kost.description || `Kost nyaman dengan fasilitas lengkap dan lingkungan aman. Cocok untuk mahasiswa maupun pekerja dengan lokasi strategis di ${kost.city || kost.location}.`}
               </p>
 
               {/* ACTION */}

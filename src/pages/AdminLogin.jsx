@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 
-const AdminLogin = () => {
+const AdminLogin = ({ onLogin }) => { // TAMBAHKAN PROP INI
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
     email: "",
@@ -23,6 +23,12 @@ const AdminLogin = () => {
       formData.password === "admin123"
     ) {
       localStorage.setItem("isAdminLoggedIn", "true");
+      
+      // TAMBAHKAN PEMANGGILAN onLogin JIKA ADA
+      if (onLogin) {
+        onLogin();
+      }
+      
       navigate("/admin/dashboard");
     } else {
       setError("Email atau password salah!");

@@ -3,12 +3,11 @@ import { useEffect, useRef, useState } from "react";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import PromoSlider from "@/pages/PromoSlider";
-import { kostDiscountData } from "@/data/kostDiscountData";
 
 // typing words
 const typingWords = ["Perfect Kost", "Affordable Kost", "Comfortable Kost"];
 
-const Home = () => {
+const Home = ({ kosts = [] }) => {
   /* =======================
      STATE & REF
   ======================= */
@@ -23,11 +22,11 @@ const Home = () => {
   /* =======================
      DATA PREVIEW
   ======================= */
-  const promoToday = kostDiscountData
+  const promoToday = kosts
     .filter((kost) => kost.discount > 0)
     .slice(0, 5);
 
-  const previewExplore = kostDiscountData.slice(0, 4);
+  const previewExplore = kosts.slice(0, 4);
 
   /* =======================
      TYPING EFFECT
@@ -73,11 +72,12 @@ const Home = () => {
   /* =======================
      SEARCH FILTER (HERO PROMO)
   ======================= */
-  const filteredKost = kostDiscountData.filter((kost) => {
+  const filteredKost = kosts.filter((kost) => {
     const keyword = search.toLowerCase();
     return (
       kost.name.toLowerCase().includes(keyword) ||
-      kost.city.toLowerCase().includes(keyword)
+      (kost.city && kost.city.toLowerCase().includes(keyword)) ||
+      (kost.location && kost.location.toLowerCase().includes(keyword))
     );
   });
 
@@ -146,7 +146,7 @@ const Home = () => {
                     className="min-w-[280px] bg-white rounded-xl shadow-md overflow-hidden"
                   >
                     <img
-                      src={`${import.meta.env.BASE_URL}${kost.image}`}
+                      src={kost.image}
                       alt={kost.name}
                       className="h-40 w-full object-cover"
                     />
@@ -154,15 +154,17 @@ const Home = () => {
                     <div className="p-4">
                       <h3 className="font-bold text-lg">{kost.name}</h3>
                       <p className="text-sm text-gray-500 mb-2">
-                        {kost.city}
+                        {kost.city || kost.location}
                       </p>
 
                       <div className="flex items-center gap-2 mb-3">
-                        <span className="line-through text-gray-400 text-sm">
-                          Rp {kost.priceBefore.toLocaleString("id-ID")}
-                        </span>
+                        {kost.discount > 0 && (
+                          <span className="line-through text-gray-400 text-sm">
+                            Rp {kost.priceBefore ? kost.priceBefore.toLocaleString("id-ID") : (kost.price * 1.2).toLocaleString("id-ID")}
+                          </span>
+                        )}
                         <span className="text-primary font-bold">
-                          Rp {kost.priceAfter.toLocaleString("id-ID")}
+                          Rp {kost.price ? kost.price.toLocaleString("id-ID") : (kost.priceAfter ? kost.priceAfter.toLocaleString("id-ID") : "0")}
                         </span>
                       </div>
 
@@ -217,7 +219,7 @@ const Home = () => {
                   className="bg-white rounded-xl shadow-sm hover:shadow-md transition overflow-hidden"
                 >
                   <img
-                    src={`${import.meta.env.BASE_URL}${kost.image}`}
+                    src={kost.image}
                     alt={kost.name}
                     className="h-40 w-full object-cover"
                   />
@@ -228,21 +230,21 @@ const Home = () => {
                     </h3>
 
                     <p className="text-sm text-gray-500 mb-2">
-                      📍 {kost.city}
+                      📍 {kost.city || kost.location}
                     </p>
 
                     <span className="inline-block bg-blue-100 text-blue-600 text-xs font-semibold px-3 py-1 rounded-full mb-2">
-                      {kost.type}
+                      {kost.type || "Kost"}
                     </span>
 
                     <div className="flex items-center gap-2 mb-3">
                       {kost.discount > 0 && (
                         <span className="line-through text-gray-400 text-sm">
-                          Rp {kost.priceBefore.toLocaleString("id-ID")}
+                          Rp {kost.priceBefore ? kost.priceBefore.toLocaleString("id-ID") : (kost.price * 1.2).toLocaleString("id-ID")}
                         </span>
                       )}
                       <span className="text-primary font-bold">
-                        Rp {kost.priceAfter.toLocaleString("id-ID")}
+                        Rp {kost.price ? kost.price.toLocaleString("id-ID") : (kost.priceAfter ? kost.priceAfter.toLocaleString("id-ID") : "0")}
                       </span>
                     </div>
 
@@ -258,75 +260,76 @@ const Home = () => {
             </div>
           </div>
         </section>
-      </main>
+
         {/* ================= ABOUT US PREVIEW ================= */}
-            <section className="bg-white py-20">
-              <div className="max-w-7xl mx-auto px-4">
-                <div className="grid md:grid-cols-2 gap-14 items-center">
+        <section className="bg-white py-20">
+          <div className="max-w-7xl mx-auto px-4">
+            <div className="grid md:grid-cols-2 gap-14 items-center">
 
-                  {/* LEFT – TEXT */}
-                  <div>
-                    <h2 className="text-3xl font-bold mb-4">
-                      Tentang DED-Kost
-                    </h2>
+              {/* LEFT – TEXT */}
+              <div>
+                <h2 className="text-3xl font-bold mb-4">
+                  Tentang DED-Kost
+                </h2>
 
-                    <p className="text-gray-600 mb-6 leading-relaxed">
-                      DED-Kost adalah platform pencarian kost yang dirancang untuk membantu
-                      mahasiswa dan pekerja menemukan hunian terbaik dengan cara yang mudah,
-                      cepat, dan transparan.
-                    </p>
+                <p className="text-gray-600 mb-6 leading-relaxed">
+                  DED-Kost adalah platform pencarian kost yang dirancang untuk membantu
+                  mahasiswa dan pekerja menemukan hunian terbaik dengan cara yang mudah,
+                  cepat, dan transparan.
+                </p>
 
-                    <p className="text-gray-600 mb-8 leading-relaxed">
-                      Kami percaya bahwa mencari tempat tinggal bukan hanya soal harga,
-                      tetapi juga kenyamanan, lokasi, dan keamanan.
-                    </p>
+                <p className="text-gray-600 mb-8 leading-relaxed">
+                  Kami percaya bahwa mencari tempat tinggal bukan hanya soal harga,
+                  tetapi juga kenyamanan, lokasi, dan keamanan.
+                </p>
 
-                    <Link
-                      to="/about"
-                      className="inline-block bg-primary text-white px-6 py-3 rounded-lg font-semibold hover:bg-primary/90"
-                    >
-                      Learn More About Us →
-                    </Link>
-                  </div>
+                <Link
+                  to="/about"
+                  className="inline-block bg-primary text-white px-6 py-3 rounded-lg font-semibold hover:bg-primary/90"
+                >
+                  Learn More About Us →
+                </Link>
+              </div>
 
-                  {/* RIGHT – VALUE CARDS */}
-                  <div className="grid sm:grid-cols-2 gap-6">
-                    <div className="bg-gray-50 p-6 rounded-xl shadow-sm text-center">
-                      <p className="text-3xl mb-3">🤝</p>
-                      <h4 className="font-semibold mb-1">Kepercayaan</h4>
-                      <p className="text-sm text-gray-500">
-                        Informasi kost yang jujur dan transparan
-                      </p>
-                    </div>
+              {/* RIGHT – VALUE CARDS */}
+              <div className="grid sm:grid-cols-2 gap-6">
+                <div className="bg-gray-50 p-6 rounded-xl shadow-sm text-center">
+                  <p className="text-3xl mb-3">🤝</p>
+                  <h4 className="font-semibold mb-1">Kepercayaan</h4>
+                  <p className="text-sm text-gray-500">
+                    Informasi kost yang jujur dan transparan
+                  </p>
+                </div>
 
-                    <div className="bg-gray-50 p-6 rounded-xl shadow-sm text-center">
-                      <p className="text-3xl mb-3">⚡</p>
-                      <h4 className="font-semibold mb-1">Kemudahan</h4>
-                      <p className="text-sm text-gray-500">
-                        Pencarian cepat dan penggunaan yang simpel
-                      </p>
-                    </div>
+                <div className="bg-gray-50 p-6 rounded-xl shadow-sm text-center">
+                  <p className="text-3xl mb-3">⚡</p>
+                  <h4 className="font-semibold mb-1">Kemudahan</h4>
+                  <p className="text-sm text-gray-500">
+                    Pencarian cepat dan penggunaan yang simpel
+                  </p>
+                </div>
 
-                    <div className="bg-gray-50 p-6 rounded-xl shadow-sm text-center">
-                      <p className="text-3xl mb-3">🎨</p>
-                      <h4 className="font-semibold mb-1">Kenyamanan</h4>
-                      <p className="text-sm text-gray-500">
-                        Desain ramah dan pengalaman menyenangkan
-                      </p>
-                    </div>
+                <div className="bg-gray-50 p-6 rounded-xl shadow-sm text-center">
+                  <p className="text-3xl mb-3">🎨</p>
+                  <h4 className="font-semibold mb-1">Kenyamanan</h4>
+                  <p className="text-sm text-gray-500">
+                    Desain ramah dan pengalaman menyenangkan
+                  </p>
+                </div>
 
-                    <div className="bg-gray-50 p-6 rounded-xl shadow-sm text-center">
-                      <p className="text-3xl mb-3">🔒</p>
-                      <h4 className="font-semibold mb-1">Keamanan</h4>
-                      <p className="text-sm text-gray-500">
-                        Data dan privasi pengguna terjaga
-                      </p>
-                    </div>
-                  </div>
-
+                <div className="bg-gray-50 p-6 rounded-xl shadow-sm text-center">
+                  <p className="text-3xl mb-3">🔒</p>
+                  <h4 className="font-semibold mb-1">Keamanan</h4>
+                  <p className="text-sm text-gray-500">
+                    Data dan privasi pengguna terjaga
+                  </p>
                 </div>
               </div>
-            </section>
+
+            </div>
+          </div>
+        </section>
+      </main>
 
       <Footer />
     </div>
