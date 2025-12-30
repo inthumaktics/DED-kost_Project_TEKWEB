@@ -2,7 +2,7 @@ import { Routes, Route } from 'react-router-dom';
 import Home from './pages/Home';
 import Explore from "./pages/Explore";
 import Promotion from './pages/Promotions';
-import AboutUs from './pages/AboutUs';
+import AboutUs from './pages/About';
 import AdminLogin from './pages/AdminLogin';
 import AdminDashboard from './pages/AdminDashboard';
 import Login from './pages/Login';
@@ -18,7 +18,7 @@ function App() {
         <Route path="/kost/:id" element={<DetailKost />} />
         <Route path="/explore" element={<Explore />} />
         <Route path="/promotions" element={<Promotion />} />
-        <Route path="/about us" element={<AboutUs />} />
+        <Route path="/about" element={<AboutUs />} />
         <Route path="/admin/login" element={<AdminLogin />} />
         <Route path="/admin/dashboard" element={<AdminDashboard />} />
         <Route path="/admin" element={<AdminLogin />} />
