@@ -3,12 +3,7 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
-  
   "homepage": "https://inthumaktics.github.io/DED-kost_Project_TERMEB",
-"scripts": {
-  "predeploy": "npm run build",
-  "deploy": "gh-pages -d dist"
-},
   "scripts": {
     "dev": "vite",
     "build": "vite build",
@@ -17,6 +12,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@radix-ui/react-alert-dialog": "^1.1.15",
     "@radix-ui/react-dialog": "^1.1.15",
     "@radix-ui/react-slot": "^1.2.4",
     "class-variance-authority": "^0.7.1",
