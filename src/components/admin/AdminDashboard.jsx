@@ -14,7 +14,7 @@ const AdminDashboard = ({ kosts, onAddKost, onDeleteKost, onLogout }) => {
           {/* Stats Summary */}
           <div className="lg:col-span-3 mb-6">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <div className="bg-white p-6 rounded-lg shadow">
+              <div className="bg-white p-6 rounded-lg shadow border">
                 <div className="flex items-center">
                   <div className="bg-blue-100 p-3 rounded-lg mr-4">
                     <svg className="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -28,7 +28,7 @@ const AdminDashboard = ({ kosts, onAddKost, onDeleteKost, onLogout }) => {
                 </div>
               </div>
 
-              <div className="bg-white p-6 rounded-lg shadow">
+              <div className="bg-white p-6 rounded-lg shadow border">
                 <div className="flex items-center">
                   <div className="bg-green-100 p-3 rounded-lg mr-4">
                     <svg className="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -44,7 +44,7 @@ const AdminDashboard = ({ kosts, onAddKost, onDeleteKost, onLogout }) => {
                 </div>
               </div>
 
-              <div className="bg-white p-6 rounded-lg shadow">
+              <div className="bg-white p-6 rounded-lg shadow border">
                 <div className="flex items-center">
                   <div className="bg-purple-100 p-3 rounded-lg mr-4">
                     <svg className="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -64,7 +64,7 @@ const AdminDashboard = ({ kosts, onAddKost, onDeleteKost, onLogout }) => {
 
           {/* Kolom kiri: Tabel data */}
           <div className="lg:col-span-2">
-            <div className="bg-white p-6 rounded-lg shadow">
+            <div className="bg-white p-6 rounded-lg shadow border">
               <h2 className="text-xl font-semibold mb-4">Daftar Kost</h2>
               <DataTable kosts={kosts} onDeleteKost={onDeleteKost} />
             </div>
@@ -72,7 +72,7 @@ const AdminDashboard = ({ kosts, onAddKost, onDeleteKost, onLogout }) => {
 
           {/* Kolom kanan: Form input */}
           <div className="lg:col-span-1">
-            <div className="bg-white p-6 rounded-lg shadow">
+            <div className="bg-white p-6 rounded-lg shadow border">
               <h2 className="text-xl font-semibold mb-4">Tambah Kost Baru</h2>
               <FormData onAddKost={onAddKost} />
             </div>
