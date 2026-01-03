@@ -140,7 +140,7 @@ const AboutUs = () => {
 
                   <ul className="text-gray-600 space-y-2 text-sm">
                     <li>📧 support@ded-kost.com</li>
-                    <li>💬 WhatsApp: +62 812-3456-7890</li>
+                    <li>💬 WhatsApp: +62 831-1316-5020</li>
                     <li>📍 Yogyakarta, Indonesia</li>
                   </ul>
                 </div>

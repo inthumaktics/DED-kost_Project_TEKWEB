@@ -5,13 +5,11 @@ import Footer from "@/components/layout/Footer";
 import PromoSlider from "@/pages/PromoSlider";
 import ContactForm from "@/components/layout/ContactForm";
 
-// typing words
 const typingWords = ["Perfect Kost", "Affordable Kost", "Comfortable Kost"];
 
 const Home = ({ kosts = [] }) => {
-  /* =======================
-     STATE & REF
-  ======================= */
+
+  // State & refs 
   const [typedText, setTypedText] = useState("");
   const [wordIndex, setWordIndex] = useState(0);
   const sliderRef = useRef(null);
@@ -20,11 +18,9 @@ const Home = ({ kosts = [] }) => {
   // search
   const [search, setSearch] = useState("");
 
-  /* =======================
-     WHATSAPP CONTACT
-  ======================= */
+// ===== HANDLE CONTACT WHATSAPP =====
   const handleContactWhatsApp = () => {
-    const phoneNumber = "6281234567890"; // 🔴 GANTI nomor admin (tanpa +)
+    const phoneNumber = "6283113165020"; 
     const message = `
 Halo DED-Kost 👋
 
@@ -39,18 +35,14 @@ Mohon informasinya ya, terima kasih 🙏
     window.open(whatsappUrl, "_blank");
   };
 
-  /* =======================
-     DATA PREVIEW
-  ======================= */
+// ===== PROMO TODAY & PREVIEW EXPLORE =====
   const promoToday = kosts
     .filter((kost) => kost.discount > 0)
     .slice(0, 5);
 
   const previewExplore = kosts.slice(0, 4);
 
-  /* =======================
-     TYPING EFFECT
-  ======================= */
+// Typing effect
   useEffect(() => {
     let charIndex = 0;
 
@@ -70,9 +62,7 @@ Mohon informasinya ya, terima kasih 🙏
     return () => clearInterval(interval);
   }, [wordIndex]);
 
-  /* =======================
-     AUTO SCROLL SLIDER (HERO)
-  ======================= */
+// Auto-scroll slider
   useEffect(() => {
     const slider = sliderRef.current;
     if (!slider) return;
@@ -89,9 +79,7 @@ Mohon informasinya ya, terima kasih 🙏
     return () => clearInterval(interval);
   }, [isHovering]);
 
-  /* =======================
-     SEARCH FILTER (HERO PROMO)
-  ======================= */
+// Search filter
   const filteredKost = kosts.filter((kost) => {
     const keyword = search.toLowerCase();
     return (
@@ -324,7 +312,7 @@ Mohon informasinya ya, terima kasih 🙏
                   to="/about"
                   className="inline-block bg-primary text-white px-6 py-3 rounded-lg font-semibold hover:bg-primary/90"
                 >
-                  Learn More About Us →
+                  Learn More About Us...
                 </Link>
               </div>
 
@@ -380,7 +368,7 @@ Mohon informasinya ya, terima kasih 🙏
 
                 <ul className="text-gray-600 space-y-2 text-sm">
                   <li>📧 support@ded-kost.com</li>
-                  <li>💬 WhatsApp: +62 812-3456-7890</li>
+                  <li>💬 WhatsApp: +62 831-1316-5020</li>
                   <li>📍 Yogyakarta, Indonesia</li>
                 </ul>
               </div>
