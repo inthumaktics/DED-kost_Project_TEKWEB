@@ -1,41 +1,50 @@
-import React from 'react';
+import { cn } from "@/lib/utils";
 
-const Card = React.forwardRef(({ className = '', ...props }, ref) => (
-  <div
-    ref={ref}
-    className={`rounded-lg border border-gray-200 bg-white text-gray-900 shadow-sm ${className}`}
-    {...props}
-  />
-));
-Card.displayName = 'Card';
+/* CARD */
+export function Card({ className, ...props }) {
+  return (
+    <div
+      className={cn(
+        "rounded-xl bg-white shadow-md hover:shadow-lg transition",
+        className
+      )}
+      {...props}
+    />
+  );
+}
 
-const CardHeader = React.forwardRef(({ className = '', ...props }, ref) => (
-  <div ref={ref} className={`flex flex-col space-y-1.5 p-6 ${className}`} {...props} />
-));
-CardHeader.displayName = 'CardHeader';
+/* CARD HEADER */
+export function CardHeader({ className, ...props }) {
+  return (
+    <div
+      className={cn(
+        "border-b px-6 py-4 font-semibold",
+        className
+      )}
+      {...props}
+    />
+  );
+}
 
-const CardTitle = React.forwardRef(({ className = '', ...props }, ref) => (
-  <h3
-    ref={ref}
-    className={`text-2xl font-semibold leading-none tracking-tight ${className}`}
-    {...props}
-  />
-));
-CardTitle.displayName = 'CardTitle';
+/* CARD CONTENT */
+export function CardContent({ className, ...props }) {
+  return (
+    <div
+      className={cn("px-6 py-4", className)}
+      {...props}
+    />
+  );
+}
 
-const CardDescription = React.forwardRef(({ className = '', ...props }, ref) => (
-  <p ref={ref} className={`text-sm text-gray-600 ${className}`} {...props} />
-));
-CardDescription.displayName = 'CardDescription';
-
-const CardContent = React.forwardRef(({ className = '', ...props }, ref) => (
-  <div ref={ref} className={`p-6 pt-0 ${className}`} {...props} />
-));
-CardContent.displayName = 'CardContent';
-
-const CardFooter = React.forwardRef(({ className = '', ...props }, ref) => (
-  <div ref={ref} className={`flex items-center p-6 pt-0 ${className}`} {...props} />
-));
-CardFooter.displayName = 'CardFooter';
-
-export { Card, CardHeader, CardFooter, CardTitle, CardDescription, CardContent };
+/* CARD FOOTER (opsional, tapi kepake nanti) */
+export function CardFooter({ className, ...props }) {
+  return (
+    <div
+      className={cn(
+        "border-t px-6 py-4 flex items-center justify-end",
+        className
+      )}
+      {...props}
+    />
+  );
+}

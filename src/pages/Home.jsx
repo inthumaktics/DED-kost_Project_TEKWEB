@@ -21,6 +21,25 @@ const Home = ({ kosts = [] }) => {
   const [search, setSearch] = useState("");
 
   /* =======================
+     WHATSAPP CONTACT
+  ======================= */
+  const handleContactWhatsApp = () => {
+    const phoneNumber = "6281234567890"; // 🔴 GANTI nomor admin (tanpa +)
+    const message = `
+Halo DED-Kost 👋
+
+Saya ingin bertanya mengenai pencarian kost.
+Mohon informasinya ya, terima kasih 🙏
+    `.trim();
+
+    const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(
+      message
+    )}`;
+
+    window.open(whatsappUrl, "_blank");
+  };
+
+  /* =======================
      DATA PREVIEW
   ======================= */
   const promoToday = kosts
@@ -123,7 +142,10 @@ const Home = ({ kosts = [] }) => {
                   Explore Kost
                 </Link>
 
-                <button className="border border-primary text-primary px-6 py-3 rounded-lg font-semibold hover:bg-primary hover:text-white">
+                <button
+                  onClick={handleContactWhatsApp}
+                  className="border border-primary text-primary px-6 py-3 rounded-lg font-semibold hover:bg-primary hover:text-white"
+                >
                   Contact via WhatsApp
                 </button>
               </div>
@@ -161,11 +183,19 @@ const Home = ({ kosts = [] }) => {
                       <div className="flex items-center gap-2 mb-3">
                         {kost.discount > 0 && (
                           <span className="line-through text-gray-400 text-sm">
-                            Rp {kost.priceBefore ? kost.priceBefore.toLocaleString("id-ID") : (kost.price * 1.2).toLocaleString("id-ID")}
+                            Rp{" "}
+                            {kost.priceBefore
+                              ? kost.priceBefore.toLocaleString("id-ID")
+                              : (kost.price * 1.2).toLocaleString("id-ID")}
                           </span>
                         )}
                         <span className="text-primary font-bold">
-                          Rp {kost.price ? kost.price.toLocaleString("id-ID") : (kost.priceAfter ? kost.priceAfter.toLocaleString("id-ID") : "0")}
+                          Rp{" "}
+                          {kost.price
+                            ? kost.price.toLocaleString("id-ID")
+                            : kost.priceAfter
+                            ? kost.priceAfter.toLocaleString("id-ID")
+                            : "0"}
                         </span>
                       </div>
 
@@ -241,11 +271,19 @@ const Home = ({ kosts = [] }) => {
                     <div className="flex items-center gap-2 mb-3">
                       {kost.discount > 0 && (
                         <span className="line-through text-gray-400 text-sm">
-                          Rp {kost.priceBefore ? kost.priceBefore.toLocaleString("id-ID") : (kost.price * 1.2).toLocaleString("id-ID")}
+                          Rp{" "}
+                          {kost.priceBefore
+                            ? kost.priceBefore.toLocaleString("id-ID")
+                            : (kost.price * 1.2).toLocaleString("id-ID")}
                         </span>
                       )}
                       <span className="text-primary font-bold">
-                        Rp {kost.price ? kost.price.toLocaleString("id-ID") : (kost.priceAfter ? kost.priceAfter.toLocaleString("id-ID") : "0")}
+                        Rp{" "}
+                        {kost.price
+                          ? kost.price.toLocaleString("id-ID")
+                          : kost.priceAfter
+                          ? kost.priceAfter.toLocaleString("id-ID")
+                          : "0"}
                       </span>
                     </div>
 
@@ -266,22 +304,20 @@ const Home = ({ kosts = [] }) => {
         <section className="bg-white py-20">
           <div className="max-w-7xl mx-auto px-4">
             <div className="grid md:grid-cols-2 gap-14 items-center">
-
-              {/* LEFT – TEXT */}
               <div>
                 <h2 className="text-3xl font-bold mb-4">
                   Tentang DED-Kost
                 </h2>
 
                 <p className="text-gray-600 mb-6 leading-relaxed">
-                  DED-Kost adalah platform pencarian kost yang dirancang untuk membantu
-                  mahasiswa dan pekerja menemukan hunian terbaik dengan cara yang mudah,
-                  cepat, dan transparan.
+                  DED-Kost adalah platform pencarian kost yang dirancang untuk
+                  membantu mahasiswa dan pekerja menemukan hunian terbaik
+                  dengan cara yang mudah, cepat, dan transparan.
                 </p>
 
                 <p className="text-gray-600 mb-8 leading-relaxed">
-                  Kami percaya bahwa mencari tempat tinggal bukan hanya soal harga,
-                  tetapi juga kenyamanan, lokasi, dan keamanan.
+                  Kami percaya bahwa mencari tempat tinggal bukan hanya soal
+                  harga, tetapi juga kenyamanan, lokasi, dan keamanan.
                 </p>
 
                 <Link
@@ -292,7 +328,6 @@ const Home = ({ kosts = [] }) => {
                 </Link>
               </div>
 
-              {/* RIGHT – VALUE CARDS */}
               <div className="grid sm:grid-cols-2 gap-6">
                 <div className="bg-gray-50 p-6 rounded-xl shadow-sm text-center">
                   <p className="text-3xl mb-3">🤝</p>
@@ -326,15 +361,14 @@ const Home = ({ kosts = [] }) => {
                   </p>
                 </div>
               </div>
-
             </div>
           </div>
         </section>
-        {/* CONTACT US */}
+
+        {/* ================= CONTACT US ================= */}
         <section className="bg-gray-50">
           <div className="max-w-7xl mx-auto px-4 py-20">
             <div className="grid md:grid-cols-2 gap-12 items-center">
-              {/* LEFT TEXT */}
               <div>
                 <h2 className="text-3xl font-bold mb-4">
                   Hubungi Kami
@@ -351,12 +385,10 @@ const Home = ({ kosts = [] }) => {
                 </ul>
               </div>
 
-              {/* RIGHT FORM */}
               <ContactForm />
             </div>
           </div>
         </section>
-
       </main>
 
       <Footer />
