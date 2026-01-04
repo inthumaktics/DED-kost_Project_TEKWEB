@@ -117,7 +117,7 @@ const AdminLogin = ({ onLogin }) => {
 
                 <Button
                   type="submit"
-                  className="w-full bg-purple-600 hover:bg-purple-700 text-white"
+                  className="w-full bg-purple-700 hover:bg-purple-700 text-white"
                 >
                   Login sebagai Admin
                 </Button>
