@@ -56,11 +56,11 @@ const DataTable = ({ kosts, onDeleteKost }) => {
           <Table>
             <TableHeader className="bg-gradient-to-r from-purple-50 to-blue-50">
               <TableRow>
-                <TableHead className="w-[200px] text-purple-800 font-bold">Nama Kost</TableHead>
-                <TableHead className="text-purple-800 font-bold">Lokasi</TableHead>
-                <TableHead className="text-purple-800 font-bold">Harga</TableHead>
-                <TableHead className="text-purple-800 font-bold">Fasilitas</TableHead>
-                <TableHead className="text-right text-purple-800 font-bold">Aksi</TableHead>
+                <TableHead className="w-[200px] text-black-800 font-bold">Nama Kost</TableHead>
+                <TableHead className="text-black-800 font-bold">Lokasi</TableHead>
+                <TableHead className="text-black-800 font-bold">Harga</TableHead>
+                <TableHead className="text-black-800 font-bold">Fasilitas</TableHead>
+                <TableHead className="text-right text-black-800 font-bold">Aksi</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
