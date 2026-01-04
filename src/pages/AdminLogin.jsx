@@ -3,10 +3,16 @@ import { useNavigate } from "react-router-dom";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import { Button } from "@/components/ui/button";
-// import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"; // PERBAIKI IMPORT INI
 import { Input } from "@/components/ui/input";
+// Import AdminCard khusus untuk admin
+import {
+  AdminCard,
+  AdminCardContent,
+  AdminCardHeader,
+  AdminCardTitle,
+} from "@/components/admin/AdminCard";
 
-const AdminLogin = ({ onLogin }) => { // TAMBAHKAN PROP INI
+const AdminLogin = ({ onLogin }) => {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
     email: "",
@@ -17,7 +23,7 @@ const AdminLogin = ({ onLogin }) => { // TAMBAHKAN PROP INI
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    // Credentials admin sederhana (untung demo)
+    // Credentials admin sederhana (untuk demo)
     if (
       formData.email === "admin@ded-kost.com" &&
       formData.password === "admin123"
@@ -58,11 +64,14 @@ const AdminLogin = ({ onLogin }) => { // TAMBAHKAN PROP INI
             </p>
           </div>
 
-          <Card className="shadow-lg border-0">
-            <CardHeader>
-              <CardTitle className="text-center">Login ke Dashboard</CardTitle>
-            </CardHeader>
-            <CardContent>
+          {/* Ganti Card biasa dengan AdminCard */}
+          <AdminCard className="shadow-lg">
+            <AdminCardHeader>
+              <AdminCardTitle className="text-center text-purple-800">
+                Login ke Dashboard Admin
+              </AdminCardTitle>
+            </AdminCardHeader>
+            <AdminCardContent>
               <form onSubmit={handleSubmit} className="space-y-6">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -108,9 +117,9 @@ const AdminLogin = ({ onLogin }) => { // TAMBAHKAN PROP INI
 
                 <Button
                   type="submit"
-                  className="w-full bg-primary hover:bg-primary-600"
+                  className="w-full bg-purple-600 hover:bg-purple-700 text-white"
                 >
-                  Login
+                  Login sebagai Admin
                 </Button>
 
                 <div className="text-center">
@@ -123,8 +132,8 @@ const AdminLogin = ({ onLogin }) => { // TAMBAHKAN PROP INI
                   </button>
                 </div>
               </form>
-            </CardContent>
-          </Card>
+            </AdminCardContent>
+          </AdminCard>
         </div>
       </main>
 
