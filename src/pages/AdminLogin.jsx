@@ -65,7 +65,7 @@ const AdminLogin = ({ onLogin }) => {
           </div>
 
           {/* Ganti Card biasa dengan AdminCard */}
-          <AdminCard className="shadow-lg">
+          <AdminCard className="shadow-lg-">
             <AdminCardHeader>
               <AdminCardTitle className="text-center text-purple-800">
                 Login ke Dashboard Admin
