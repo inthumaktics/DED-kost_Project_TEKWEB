@@ -7,31 +7,29 @@ import {
   TableHeader,
   TableRow,
 } from "../../components/ui/table"
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from "../../components/ui/dialog"
 
 const DataTable = ({ kosts, onDeleteKost }) => {
-  // Inisialisasi state dengan isOpen: false
   const [deleteModal, setDeleteModal] = useState({
     isOpen: false,
     kostId: null,
     kostData: null,
   })
 
+  const [editingKost, setEditingKost] = useState(null)
+  const [editModal, setEditModal] = useState(false)
+
   const handleDeleteClick = (id) => {
     const kostToDelete = kosts.find(kost => kost.id === id)
-    // Hanya membuka modal ketika tombol ditekan
     setDeleteModal({
       isOpen: true,
       kostId: id,
       kostData: kostToDelete,
     })
+  }
+
+  const handleEditClick = (kost) => {
+    setEditingKost(kost)
+    setEditModal(true)
   }
 
   const handleConfirmDelete = () => {
@@ -53,43 +51,58 @@ const DataTable = ({ kosts, onDeleteKost }) => {
 
   return (
     <>
-      <div className="bg-white rounded-xl shadow-lg overflow-hidden border">
-        {/* ... kode tabel tetap sama ... */}
-        
+      <div className="bg-white rounded-xl shadow-lg overflow-hidden border border-gray-200">
         <div className="overflow-x-auto">
           <Table>
-            <TableHeader>
+            <TableHeader className="bg-gradient-to-r from-purple-50 to-blue-50">
               <TableRow>
-                <TableHead className="w-[200px]">Nama</TableHead>
-                <TableHead>Lokasi</TableHead>
-                <TableHead>Harga</TableHead>
-                <TableHead>Fasilitas</TableHead>
-                <TableHead className="text-right">Aksi</TableHead>
+                <TableHead className="w-[200px] text-purple-800 font-bold">Nama Kost</TableHead>
+                <TableHead className="text-purple-800 font-bold">Lokasi</TableHead>
+                <TableHead className="text-purple-800 font-bold">Harga</TableHead>
+                <TableHead className="text-purple-800 font-bold">Fasilitas</TableHead>
+                <TableHead className="text-right text-purple-800 font-bold">Aksi</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
               {kosts.map((kost) => (
-                <TableRow key={kost.id}>
+                <TableRow key={kost.id} className="hover:bg-gray-50 transition-colors duration-150">
                   <TableCell className="font-medium">
                     <div className="flex items-center">
-                      <div className="h-10 w-10 flex-shrink-0">
+                      <div className="h-12 w-12 flex-shrink-0 relative">
                         <img
-                          className="h-10 w-10 rounded-full object-cover"
+                          className="h-12 w-12 rounded-lg object-cover shadow-md"
                           src={kost.image}
                           alt={kost.name}
                         />
+                        <div className="absolute -top-1 -right-1 h-5 w-5 bg-blue-500 rounded-full flex items-center justify-center">
+                          <span className="text-xs text-white font-bold">{kost.id}</span>
+                        </div>
                       </div>
                       <div className="ml-4">
-                        <div className="text-sm font-medium text-gray-900">
+                        <div className="text-sm font-semibold text-gray-900">
                           {kost.name}
+                        </div>
+                        <div className="text-xs text-gray-500">
+                          ID: {kost.id}
                         </div>
                       </div>
                     </div>
                   </TableCell>
-                  <TableCell>{kost.location}</TableCell>
                   <TableCell>
-                    <div className="text-sm font-bold text-blue-600">
-                      Rp {kost.price.toLocaleString()}
+                    <div className="flex items-center">
+                      <svg className="w-4 h-4 text-gray-400 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+                      </svg>
+                      <span className="text-sm font-medium">{kost.location}</span>
+                    </div>
+                  </TableCell>
+                  <TableCell>
+                    <div className="inline-flex items-center px-3 py-1 rounded-full bg-gradient-to-r from-green-50 to-emerald-50 border border-green-200">
+                      <div className="text-sm font-bold text-green-700">
+                        Rp {kost.price.toLocaleString()}
+                      </div>
+                      <span className="ml-1 text-xs text-green-600">/bulan</span>
                     </div>
                   </TableCell>
                   <TableCell>
@@ -97,31 +110,42 @@ const DataTable = ({ kosts, onDeleteKost }) => {
                       {kost.facilities.slice(0, 2).map((facility, index) => (
                         <span
                           key={index}
-                          className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800"
+                          className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800 border border-blue-200 shadow-sm"
                         >
                           {facility}
                         </span>
                       ))}
                       {kost.facilities.length > 2 && (
-                        <span className="text-xs text-gray-500">
-                          +{kost.facilities.length - 2} more
+                        <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-800 border border-gray-200 shadow-sm">
+                          +{kost.facilities.length - 2} lagi
                         </span>
                       )}
                     </div>
                   </TableCell>
                   <TableCell className="text-right">
-                    <button
-                      onClick={() => console.log(`Edit kost ${kost.id}`)}
-                      className="text-blue-600 hover:text-blue-900 mr-4 px-3 py-1 border border-blue-600 rounded-lg hover:bg-blue-50 transition"
-                    >
-                      Edit
-                    </button>
-                    <button
-                      onClick={() => handleDeleteClick(kost.id)}
-                      className="text-red-600 hover:text-red-900 px-3 py-1 border border-red-600 rounded-lg hover:bg-red-50 transition"
-                    >
-                      Hapus
-                    </button>
+                    <div className="flex items-center justify-end space-x-2">
+                      {/* Tombol Edit yang Lebih Keren */}
+                      <button
+                        onClick={() => handleEditClick(kost)}
+                        className="group relative inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-gradient-to-r from-blue-500 to-blue-600 rounded-lg hover:from-blue-600 hover:to-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 shadow-md hover:shadow-lg transition-all duration-200 ease-in-out transform hover:-translate-y-0.5"
+                      >
+                        <svg className="w-4 h-4 mr-2 group-hover:rotate-12 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
+                        </svg>
+                        Edit
+                      </button>
+                      
+                      {/* Tombol Hapus yang Lebih Keren */}
+                      <button
+                        onClick={() => handleDeleteClick(kost.id)}
+                        className="group relative inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-gradient-to-r from-red-500 to-red-600 rounded-lg hover:from-red-600 hover:to-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 shadow-md hover:shadow-lg transition-all duration-200 ease-in-out transform hover:-translate-y-0.5"
+                      >
+                        <svg className="w-4 h-4 mr-2 group-hover:shake-animation" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+                        </svg>
+                        Hapus
+                      </button>
+                    </div>
                   </TableCell>
                 </TableRow>
               ))}
@@ -130,15 +154,16 @@ const DataTable = ({ kosts, onDeleteKost }) => {
         </div>
       </div>
 
-      {/* Delete Confirmation Dialog - PERBAIKAN TAMPILAN */}
+      {/* Modal Hapus yang Diperbaiki */}
       {deleteModal.isOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-          <div className="bg-white rounded-lg shadow-xl w-full max-w-md mx-4">
-            <div className="p-6">
-              <div className="flex items-center gap-3 mb-4">
-                <div className="flex-shrink-0 flex items-center justify-center h-10 w-10 rounded-full bg-red-100">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black bg-opacity-70 backdrop-blur-sm">
+          <div className="bg-white rounded-2xl shadow-2xl w-full max-w-md overflow-hidden border border-gray-300">
+            {/* Header Modal dengan Gradient */}
+            <div className="bg-gradient-to-r from-red-500 to-red-600 p-6">
+              <div className="flex items-center gap-3">
+                <div className="flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-white/20 backdrop-blur-sm">
                   <svg 
-                    className="h-5 w-5 text-red-600" 
+                    className="h-6 w-6 text-white" 
                     fill="none" 
                     stroke="currentColor" 
                     viewBox="0 0 24 24"
@@ -151,60 +176,136 @@ const DataTable = ({ kosts, onDeleteKost }) => {
                     />
                   </svg>
                 </div>
-                <h3 className="text-lg font-semibold text-gray-900">Hapus Kost?</h3>
+                <div>
+                  <h3 className="text-xl font-bold text-white">Konfirmasi Hapus</h3>
+                  <p className="text-sm text-white/80">Data akan dihapus permanen</p>
+                </div>
               </div>
-              
+            </div>
+            
+            {/* Konten Modal */}
+            <div className="p-6">
               {deleteModal.kostData && (
                 <div className="mb-6">
-                  <div className="bg-gray-50 p-4 rounded-lg border border-gray-200 mb-4">
-                    <div className="flex items-center mb-3">
-                      <img
-                        className="h-10 w-10 rounded-full object-cover mr-3"
-                        src={deleteModal.kostData?.image}
-                        alt={deleteModal.kostData?.name}
-                      />
-                      <div>
-                        <p className="text-sm font-medium text-gray-900">
+                  <div className="bg-gradient-to-r from-gray-50 to-gray-100 p-5 rounded-xl border border-gray-200 mb-4 shadow-inner">
+                    <div className="flex items-center mb-4">
+                      <div className="relative">
+                        <img
+                          className="h-12 w-12 rounded-lg object-cover shadow-lg"
+                          src={deleteModal.kostData?.image}
+                          alt={deleteModal.kostData?.name}
+                        />
+                        <div className="absolute -top-1 -right-1 h-6 w-6 bg-red-500 rounded-full flex items-center justify-center">
+                          <svg className="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 20 20">
+                            <path fillRule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clipRule="evenodd"/>
+                          </svg>
+                        </div>
+                      </div>
+                      <div className="ml-4">
+                        <p className="text-lg font-bold text-gray-900">
                           {deleteModal.kostData?.name}
                         </p>
-                        <p className="text-xs text-gray-500">
+                        <div className="flex items-center text-sm text-gray-600">
+                          <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+                          </svg>
                           {deleteModal.kostData?.location}
-                        </p>
+                        </div>
                       </div>
                     </div>
-                    <div className="text-sm text-gray-600">
-                      <div className="flex justify-between mb-1">
-                        <span className="font-medium">Harga:</span>
-                        <span className="font-bold text-blue-600">
+                    <div className="space-y-3">
+                      <div className="flex justify-between items-center">
+                        <span className="text-sm font-medium text-gray-700">Harga:</span>
+                        <span className="px-3 py-1 bg-gradient-to-r from-green-100 to-emerald-100 text-green-800 font-bold rounded-full text-sm">
                           Rp {deleteModal.kostData?.price?.toLocaleString()}
                         </span>
                       </div>
-                      <div className="mt-2 text-red-600 text-xs">
-                        Data akan dihapus permanen dan tidak dapat dikembalikan.
+                      <div className="flex justify-between items-center">
+                        <span className="text-sm font-medium text-gray-700">Fasilitas:</span>
+                        <span className="text-sm text-gray-600">
+                          {deleteModal.kostData?.facilities?.length || 0} fasilitas
+                        </span>
                       </div>
                     </div>
                   </div>
                   
-                  <p className="text-sm text-gray-600 text-center">
+                  <div className="bg-red-50 border-l-4 border-red-500 p-4 rounded-r-lg mb-4">
+                    <div className="flex">
+                      <div className="flex-shrink-0">
+                        <svg className="h-5 w-5 text-red-600" fill="currentColor" viewBox="0 0 20 20">
+                          <path fillRule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clipRule="evenodd"/>
+                        </svg>
+                      </div>
+                      <div className="ml-3">
+                        <p className="text-sm font-medium text-red-800">
+                          Data akan dihapus permanen dari sistem dan tidak dapat dikembalikan.
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <p className="text-center text-gray-600 text-sm font-medium">
                     Apakah Anda yakin ingin menghapus kost ini?
                   </p>
                 </div>
               )}
               
-              <div className="flex justify-end gap-3 pt-4 border-t">
+              <div className="flex justify-end gap-3 pt-6 border-t border-gray-200">
                 <button
                   type="button"
                   onClick={handleCancelDelete}
-                  className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition"
+                  className="px-5 py-2.5 text-sm font-medium text-gray-700 bg-white border-2 border-gray-300 rounded-xl hover:bg-gray-50 hover:border-gray-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 transition-all duration-200 hover:shadow-md"
                 >
-                  Batal
+                  <div className="flex items-center">
+                    <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"/>
+                    </svg>
+                    Batalkan
+                  </div>
                 </button>
                 <button
                   type="button"
                   onClick={handleConfirmDelete}
-                  className="px-4 py-2 text-sm font-medium text-white bg-red-600 border border-transparent rounded-lg hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition"
+                  className="px-5 py-2.5 text-sm font-medium text-white bg-gradient-to-r from-red-600 to-red-700 border border-transparent rounded-xl hover:from-red-700 hover:to-red-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 shadow-lg hover:shadow-xl transition-all duration-200 transform hover:-translate-y-0.5"
                 >
-                  Ya, Hapus Kost
+                  <div className="flex items-center">
+                    <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"/>
+                    </svg>
+                    Ya, Hapus Sekarang
+                  </div>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Modal Edit (Placeholder) */}
+      {editModal && editingKost && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black bg-opacity-70 backdrop-blur-sm">
+          <div className="bg-white rounded-2xl shadow-2xl w-full max-w-md">
+            <div className="bg-gradient-to-r from-blue-500 to-blue-600 p-6 rounded-t-2xl">
+              <div className="flex items-center justify-between">
+                <h3 className="text-xl font-bold text-white">Edit Kost</h3>
+                <button
+                  onClick={() => setEditModal(false)}
+                  className="text-white/80 hover:text-white"
+                >
+                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"/>
+                  </svg>
+                </button>
+              </div>
+            </div>
+            <div className="p-6">
+              <p className="text-gray-600 mb-4">Fitur edit sedang dalam pengembangan...</p>
+              <div className="flex justify-end">
+                <button
+                  onClick={() => setEditModal(false)}
+                  className="px-4 py-2 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300"
+                >
+                  Tutup
                 </button>
               </div>
             </div>
