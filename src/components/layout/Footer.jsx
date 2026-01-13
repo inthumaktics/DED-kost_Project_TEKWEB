@@ -34,7 +34,7 @@ const Footer = () => {
             <h3 className="text-white font-semibold mb-4">Contact</h3>
             <ul className="space-y-2 text-sm text-gray-400">
               <li>📧 ded-kost@email.com</li>
-              <li>📱 +62 812-3456-7890</li>
+              <li>📱 +62 895-3751-74700</li>
               <li>📍 Yogyakarta, Indonesia</li>
             </ul>
           </div>
