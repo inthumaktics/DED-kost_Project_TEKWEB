@@ -3,7 +3,6 @@ import { useState } from "react";
 import logoNavbar from "@/assets/logo/logo_navbar.png";
 
 const Navbar = () => {
-  const [isLoginOpen, setIsLoginOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const menuItems = ["Home", "Explore", "Promotions", "About"];
@@ -19,7 +18,6 @@ const Navbar = () => {
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
               className="text-gray-700 hover:text-primary focus:outline-none"
             >
-              {/* Icon ☰ */}
               <svg
                 className="h-7 w-7"
                 fill="none"
@@ -62,7 +60,6 @@ const Navbar = () => {
                 </Link>
               ))}
 
-              {/* Spacer */}
               <div className="w-6" />
 
               {/* Auth */}
@@ -73,32 +70,12 @@ const Navbar = () => {
                 Sign Up
               </Link>
 
-              {/* Login Dropdown */}
-              <div className="relative">
-                <button
-                  onClick={() => setIsLoginOpen(!isLoginOpen)}
-                  className="text-gray-700 hover:text-primary hover:bg-violet-200 px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200"
-                >
-                  Login
-                </button>
-
-                {isLoginOpen && (
-                  <div className="absolute right-0 mt-2 w-44 bg-white border border-violet-100 rounded-xl shadow-lg z-50">
-                    <Link
-                      to="/login"
-                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-violet-100 rounded-t-xl"
-                    >
-                      User Login
-                    </Link>
-                    <Link
-                      to="/admin"
-                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-violet-200 rounded-b-xl"
-                    >
-                      Admin Login
-                    </Link>
-                  </div>
-                )}
-              </div>
+              <Link
+                to="/login"
+                className="text-gray-700 hover:text-primary hover:bg-violet-200 px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200"
+              >
+                Login
+              </Link>
             </div>
           </div>
         </div>
@@ -135,15 +112,7 @@ const Navbar = () => {
               onClick={() => setIsMobileMenuOpen(false)}
               className="block text-gray-700 hover:bg-violet-100 px-4 py-2 rounded-lg text-sm font-medium text-center"
             >
-              User Login
-            </Link>
-
-            <Link
-              to="/admin"
-              onClick={() => setIsMobileMenuOpen(false)}
-              className="block text-gray-700 hover:bg-violet-100 px-4 py-2 rounded-lg text-sm font-medium text-center"
-            >
-              Admin Login
+              Login
             </Link>
           </div>
         </div>

@@ -1,91 +1,90 @@
-import { useState, useEffect } from 'react';
-import { Routes, Route } from 'react-router-dom';
-import Home from './pages/Home';
+import { useState, useEffect } from "react";
+import { Routes, Route, Navigate } from "react-router-dom";
+
+import Home from "./pages/Home";
 import Explore from "./pages/Explore";
-import Promotion from './pages/Promotions';
-import AboutUs from './pages/About';
-import AdminLogin from './pages/AdminLogin';
-import AdminDashboard from './pages/AdminDashboard';
-import Login from './pages/Login';
-import Signup from './pages/Signup';
-import DetailKost from './pages/DetailKost';
-import { kostDiscountData } from '@/data/kostDiscountData';
+import Promotion from "./pages/Promotions";
+import AboutUs from "./pages/About";
+import AdminDashboard from "./pages/AdminDashboard";
+import Login from "./pages/Login";
+import Signup from "./pages/Signup";
+import DetailKost from "./pages/DetailKost";
+
+import { kostDiscountData } from "@/data/kostDiscountData";
 
 function App() {
-  // State untuk menyimpan semua data kost
+
+  // STATE DATA KOST
   const [kosts, setKosts] = useState(() => {
-    // Coba ambil dari localStorage terlebih dahulu
-    const savedKosts = localStorage.getItem('kostData');
-    if (savedKosts) {
-      return JSON.parse(savedKosts);
-    }
-    // Jika belum ada, gunakan data dari kostDiscountData
-    return kostDiscountData;
+    const savedKosts = localStorage.getItem("kostData");
+    return savedKosts ? JSON.parse(savedKosts) : kostDiscountData;
   });
 
-  // State untuk autentikasi admin
-  const [isAdmin, setIsAdmin] = useState(false);
-
-  // Simpan kosts ke localStorage setiap kali berubah
+  // Simpan kost ke localStorage
   useEffect(() => {
-    localStorage.setItem('kostData', JSON.stringify(kosts));
+    localStorage.setItem("kostData", JSON.stringify(kosts));
   }, [kosts]);
 
-  // Fungsi untuk menambah kost baru
+  // ADMIN ACTIONS
   const handleAddKost = (newKost) => {
     const kostWithId = {
       ...newKost,
-      id: Date.now(), // Generate ID unik
-      createdAt: new Date().toISOString()
+      id: Date.now(),
+      createdAt: new Date().toISOString(),
     };
     setKosts([...kosts, kostWithId]);
-    alert('Kost berhasil ditambahkan!');
+    alert("Kost berhasil ditambahkan!");
   };
 
-  // Fungsi untuk menghapus kost
   const handleDeleteKost = (id) => {
-    setKosts(kosts.filter(kost => kost.id !== id));
-    alert('Kost berhasil dihapus!');
+    setKosts(kosts.filter((kost) => kost.id !== id));
+    alert("Kost berhasil dihapus!");
   };
 
-  // Fungsi login admin
-  const handleAdminLogin = () => {
-    setIsAdmin(true);
-  };
-
-  // Fungsi logout admin
   const handleAdminLogout = () => {
-    setIsAdmin(false);
+    localStorage.removeItem("isAdminLoggedIn");
+    window.location.href = "/login"; // force refresh
   };
 
+// ROUTES
   return (
     <div className="App min-h-screen bg-gray-50">
       <Routes>
-        {/* Halaman User */}
+        {/* ===== USER PAGES ===== */}
         <Route path="/" element={<Home kosts={kosts} />} />
         <Route path="/kost/:id" element={<DetailKost kosts={kosts} />} />
         <Route path="/explore" element={<Explore kosts={kosts} />} />
-        <Route path="/promotions" element={<Promotion kosts={kosts.filter(k => k.discount > 0)} />} />
-        <Route path="/about" element={<AboutUs />} />
-        
-        {/* Halaman Admin */}
-        <Route path="/admin/login" element={<AdminLogin onLogin={handleAdminLogin} />} />
-        <Route 
-          path="/admin/dashboard" 
+        <Route
+          path="/promotions"
           element={
-            isAdmin ? 
-              <AdminDashboard 
+            <Promotion kosts={kosts.filter((k) => k.discount > 0)} />
+          }
+        />
+        <Route path="/about" element={<AboutUs />} />
+
+        {/* ===== AUTH ===== */}
+        <Route path="/login" element={<Login />} />
+        <Route path="/signup" element={<Signup />} />
+
+        {/* ===== ADMIN DASHBOARD (PROTECTED) ===== */}
+        <Route
+          path="/admin/dashboard"
+          element={
+            localStorage.getItem("isAdminLoggedIn") === "true" ? (
+              <AdminDashboard
                 kosts={kosts}
                 onAddKost={handleAddKost}
                 onDeleteKost={handleDeleteKost}
                 onLogout={handleAdminLogout}
-              /> 
-              : <AdminLogin onLogin={handleAdminLogin} />
-          } 
+              />
+            ) : (
+              <Navigate to="/login" />
+            )
+          }
         />
-        <Route path="/admin" element={<AdminLogin onLogin={handleAdminLogin} />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/signup" element={<Signup />} />
+
+        {/* ===== FALLBACK ===== */}
+        <Route path="*" element={<Navigate to="/" />} />
       </Routes>
     </div>
   );
