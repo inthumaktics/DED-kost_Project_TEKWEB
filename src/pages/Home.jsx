@@ -367,8 +367,8 @@ Mohon informasinya ya, terima kasih 🙏
                 </p>
 
                 <ul className="text-gray-600 space-y-2 text-sm">
-                  <li>📧 support@ded-kost.com</li>
-                  <li>💬 WhatsApp: +62 831-1316-5020</li>
+                  <li>📧 dedkost@gmail.com</li>
+                  <li>💬 +62 831-1316-5020</li>
                   <li>📍 Yogyakarta, Indonesia</li>
                 </ul>
               </div>

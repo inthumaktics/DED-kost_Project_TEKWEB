@@ -1,4 +1,16 @@
+import { useState } from "react";
+
 const ContactForm = () => {
+  const [isSubmitted, setIsSubmitted] = useState(false);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log("Contact form submitted");
+
+    // Simulasi kirim pesan
+    setIsSubmitted(true);
+  };
+
   return (
     <div className="bg-white rounded-2xl shadow-lg p-8">
       {/* HEADER */}
@@ -12,40 +24,46 @@ const ContactForm = () => {
       </div>
 
       {/* FORM */}
-      <form className="space-y-4">
+      <form className="space-y-4" onSubmit={handleSubmit}>
         <input
           type="text"
           placeholder="Nama lengkap"
-          className="w-full border rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-primary"
+          disabled={isSubmitted}
+          className="w-full border rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-primary disabled:bg-gray-100"
         />
 
         <input
           type="email"
           placeholder="Email"
-          className="w-full border rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-primary"
+          disabled={isSubmitted}
+          className="w-full border rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-primary disabled:bg-gray-100"
         />
 
         <input
           type="text"
           placeholder="Nomor WhatsApp"
-          className="w-full border rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-primary"
+          disabled={isSubmitted}
+          className="w-full border rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-primary disabled:bg-gray-100"
         />
 
         <textarea
           rows="4"
           placeholder="Pesan kamu"
-          className="w-full border rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-primary"
+          disabled={isSubmitted}
+          className="w-full border rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-primary disabled:bg-gray-100"
         />
 
         <button
           type="submit"
-          className="w-full bg-primary text-white py-3 rounded-lg font-semibold hover:bg-primary/90 transition"
-          onClick={(e) => {
-            e.preventDefault();
-            console.log("Contact form submitted");
-          }}
+          disabled={isSubmitted}
+          className={`w-full py-3 rounded-lg font-semibold transition 
+            ${
+              isSubmitted
+                ? "bg-green-500 text-white cursor-not-allowed"
+                : "bg-primary text-white hover:bg-primary/90"
+            }`}
         >
-          Kirim Pesan
+          {isSubmitted ? "Pesan Terkirim ✓" : "Kirim Pesan"}
         </button>
       </form>
     </div>
