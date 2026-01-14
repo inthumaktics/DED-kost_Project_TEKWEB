@@ -4,12 +4,18 @@ import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import PromoSlider from "@/pages/PromoSlider";
 import ContactForm from "@/components/layout/ContactForm";
+import useKosts from "@/hooks/useKosts";
 
+// typing words
 const typingWords = ["Perfect Kost", "Affordable Kost", "Comfortable Kost"];
 
-const Home = ({ kosts = [] }) => {
+const Home = () => {
+  // GUNAKAN HOOK useKosts UNTUK MENDAPATKAN DATA
+  const { kosts, loading, error, searchKost, getPromotionalKosts, getFeaturedKosts } = useKosts();
 
-  // State & refs 
+  /* =======================
+     STATE & REF
+  ======================= */
   const [typedText, setTypedText] = useState("");
   const [wordIndex, setWordIndex] = useState(0);
   const sliderRef = useRef(null);
@@ -17,40 +23,31 @@ const Home = ({ kosts = [] }) => {
 
   // search
   const [search, setSearch] = useState("");
+  const [filteredKost, setFilteredKost] = useState([]);
 
-// ===== HANDLE CONTACT WHATSAPP =====
-  const handleContactWhatsApp = () => {
-    const phoneNumber = "6283113165020"; 
-    const message = `
-Halo DED-Kost 👋
+  /* =======================
+     DATA PREVIEW
+  ======================= */
+  // Gunakan fungsi dari hook untuk mendapatkan data promo - dari MockAPI
+  const promoResult = getPromotionalKosts();
+  const promoToday = promoResult.success ? promoResult.data.slice(0, 4) : [];
 
-Saya ingin bertanya mengenai pencarian kost.
-Mohon informasinya ya, terima kasih 🙏
-    `.trim();
+  // Gunakan fungsi dari hook untuk mendapatkan data featured
+  const featuredResult = getFeaturedKosts();
+  const previewExplore = featuredResult.success ? featuredResult.data : [];
 
-    const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(
-      message
-    )}`;
-
-    window.open(whatsappUrl, "_blank");
-  };
-
-// ===== PROMO TODAY & PREVIEW EXPLORE =====
-  const promoToday = kosts
-    .filter((kost) => kost.discount > 0)
-    .slice(0, 5);
-
-  const previewExplore = kosts.slice(0, 4);
-
-// Typing effect
+  /* =======================
+     TYPING EFFECT
+  ======================= */
   useEffect(() => {
     let charIndex = 0;
+    const currentWord = typingWords[wordIndex] || typingWords[0];
 
     const interval = setInterval(() => {
-      setTypedText(typingWords[wordIndex].slice(0, charIndex + 1));
+      setTypedText(currentWord.slice(0, charIndex + 1));
       charIndex++;
 
-      if (charIndex === typingWords[wordIndex].length) {
+      if (charIndex === currentWord.length) {
         clearInterval(interval);
         setTimeout(() => {
           setWordIndex((prev) => (prev + 1) % typingWords.length);
@@ -62,10 +59,14 @@ Mohon informasinya ya, terima kasih 🙏
     return () => clearInterval(interval);
   }, [wordIndex]);
 
-// Auto-scroll slider
+  /* =======================
+     AUTO SCROLL SLIDER (HERO)
+  ======================= */
   useEffect(() => {
     const slider = sliderRef.current;
-    if (!slider) return;
+    // Ambil hanya 5 data teratas untuk slider
+    const displayData = filteredKost.slice(0, 5);
+    if (!slider || !displayData || displayData.length === 0) return;
 
     const interval = setInterval(() => {
       if (isHovering) return;
@@ -77,17 +78,76 @@ Mohon informasinya ya, terima kasih 🙏
     }, 20);
 
     return () => clearInterval(interval);
-  }, [isHovering]);
+  }, [isHovering, filteredKost]);
 
-// Search filter
-  const filteredKost = kosts.filter((kost) => {
-    const keyword = search.toLowerCase();
+  /* =======================
+     SEARCH FILTER (HERO PROMO)
+  ======================= */
+  useEffect(() => {
+    if (search) {
+      const result = searchKost(search);
+      setFilteredKost(result.data || []);
+    } else {
+      setFilteredKost(kosts);
+    }
+  }, [search, kosts, searchKost]);
+
+  // TAMPILKAN LOADING JIKA DATA SEDANG DIMUAT
+  if (loading) {
     return (
-      kost.name.toLowerCase().includes(keyword) ||
-      (kost.city && kost.city.toLowerCase().includes(keyword)) ||
-      (kost.location && kost.location.toLowerCase().includes(keyword))
+      <div className="min-h-screen flex flex-col">
+        <Navbar />
+        <div className="flex-grow flex items-center justify-center">
+          <div className="text-center">
+            <div className="w-16 h-16 border-4 border-primary border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+            <p className="text-gray-500">Memuat data kost...</p>
+          </div>
+        </div>
+        <Footer />
+      </div>
     );
-  });
+  }
+
+  // TAMPILKAN ERROR JIKA ADA
+  if (error) {
+    return (
+      <div className="min-h-screen flex flex-col">
+        <Navbar />
+        <div className="flex-grow flex flex-col items-center justify-center">
+          <p className="text-red-500 mb-4">Error: {error}</p>
+          <button 
+            onClick={() => window.location.reload()}
+            className="text-primary hover:underline"
+          >
+            Coba lagi
+          </button>
+        </div>
+        <Footer />
+      </div>
+    );
+  }
+
+  // JIKA TIDAK ADA DATA
+  if (!kosts || kosts.length === 0) {
+    return (
+      <div className="min-h-screen flex flex-col">
+        <Navbar />
+        <div className="flex-grow flex flex-col items-center justify-center">
+          <p className="text-gray-500 mb-4">Tidak ada data kost tersedia</p>
+          <Link 
+            to="/explore" 
+            className="text-primary hover:underline"
+          >
+            Jelajahi kost
+          </Link>
+        </div>
+        <Footer />
+      </div>
+    );
+  }
+
+  // Ambil hanya 5 data untuk ditampilkan di slider "UP TO 50% OFF"
+  const heroPromoData = filteredKost.slice(0, 5);
 
   return (
     <div className="min-h-screen flex flex-col bg-gray-50">
@@ -98,7 +158,7 @@ Mohon informasinya ya, terima kasih 🙏
         <div className="max-w-xl mx-auto px-4">
           <input
             type="text"
-            placeholder="Search kost or location..."
+            placeholder="Cari kost atau lokasi..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             className="w-full border rounded-full px-6 py-4 text-lg shadow-md focus:outline-primary"
@@ -130,16 +190,13 @@ Mohon informasinya ya, terima kasih 🙏
                   Explore Kost
                 </Link>
 
-                <button
-                  onClick={handleContactWhatsApp}
-                  className="border border-primary text-primary px-6 py-3 rounded-lg font-semibold hover:bg-primary hover:text-white"
-                >
+                <button className="border border-primary text-primary px-6 py-3 rounded-lg font-semibold hover:bg-primary hover:text-white">
                   Contact via WhatsApp
                 </button>
               </div>
             </div>
 
-            {/* RIGHT – HERO PROMO SLIDER */}
+            {/* RIGHT – HERO PROMO SLIDER (Hanya 5 data) */}
             <div>
               <h2 className="text-4xl font-bold text-primary mb-6">
                 UP TO 50% OFF
@@ -151,39 +208,34 @@ Mohon informasinya ya, terima kasih 🙏
                 onMouseLeave={() => setIsHovering(false)}
                 className="flex gap-6 overflow-x-auto pb-4 scroll-smooth"
               >
-                {filteredKost.map((kost) => (
+                {heroPromoData.map((kost) => (
                   <div
                     key={kost.id}
                     className="min-w-[280px] bg-white rounded-xl shadow-md overflow-hidden"
                   >
                     <img
-                      src={kost.image}
+                      src={kost.image || "/images/default-kost.png"}
                       alt={kost.name}
                       className="h-40 w-full object-cover"
+                      onError={(e) => {
+                        e.target.src = "/images/default-kost.png";
+                      }}
                     />
 
                     <div className="p-4">
-                      <h3 className="font-bold text-lg">{kost.name}</h3>
+                      <h3 className="font-bold text-lg">{kost.name || "Kost"}</h3>
                       <p className="text-sm text-gray-500 mb-2">
-                        {kost.city || kost.location}
+                        {kost.city || "Kota"}
                       </p>
 
                       <div className="flex items-center gap-2 mb-3">
-                        {kost.discount > 0 && (
+                        {kost.discount > 0 && kost.priceBefore && (
                           <span className="line-through text-gray-400 text-sm">
-                            Rp{" "}
-                            {kost.priceBefore
-                              ? kost.priceBefore.toLocaleString("id-ID")
-                              : (kost.price * 1.2).toLocaleString("id-ID")}
+                            Rp {Number(kost.priceBefore).toLocaleString("id-ID")}
                           </span>
                         )}
                         <span className="text-primary font-bold">
-                          Rp{" "}
-                          {kost.price
-                            ? kost.price.toLocaleString("id-ID")
-                            : kost.priceAfter
-                            ? kost.priceAfter.toLocaleString("id-ID")
-                            : "0"}
+                          Rp {Number(kost.priceAfter || kost.price || 0).toLocaleString("id-ID")}
                         </span>
                       </div>
 
@@ -204,11 +256,82 @@ Mohon informasinya ya, terima kasih 🙏
         {/* ================= PROMOTIONS PREVIEW ================= */}
         <section className="py-16 bg-white">
           <div className="max-w-7xl mx-auto px-4">
-            <PromoSlider
-              title="🔥 Promo Hari Ini"
-              subtitle="Diskon kost terbaik yang sayang dilewatkan"
-              data={promoToday}
-            />
+            {/* HEADER SECTION */}
+            <div className="flex items-center justify-between mb-8">
+              <div>
+                <h2 className="text-2xl font-bold mb-1">🔥 Promo Hari Ini</h2>
+                <p className="text-gray-500 text-sm">
+                  Diskon kost terbaik yang sayang dilewatkan
+                </p>
+              </div>
+
+              <Link
+                to="/promotions"
+                className="text-primary font-semibold hover:underline"
+              >
+                See all →
+              </Link>
+            </div>
+
+            {/* PROMO GRID - Sama seperti di Promotions */}
+            {promoToday.length > 0 ? (
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                {promoToday.map((kost) => (
+                  <div
+                    key={kost.id}
+                    className="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition"
+                  >
+                    {/* IMAGE - Menggunakan gambar yang sama dengan Promotions */}
+                    <img
+                      src={kost.image || "https://via.placeholder.com/400x300/4F46E5/FFFFFF?text=Kost+Image"}
+                      alt={kost.name}
+                      className="h-36 w-full object-cover"
+                      onError={(e) => {
+                        e.target.src = "https://via.placeholder.com/400x300/4F46E5/FFFFFF?text=Kost+Image";
+                      }}
+                    />
+
+                    {/* CONTENT */}
+                    <div className="p-4">
+                      <span className="inline-block bg-red-100 text-red-600 text-xs font-semibold px-3 py-1 rounded-full mb-2">
+                        Diskon {kost.discount}%
+                      </span>
+
+                      <h3 className="font-semibold text-sm mb-1">
+                        {kost.name}
+                      </h3>
+
+                      <p className="text-xs text-gray-500 mb-2">
+                        📍 {kost.city}
+                      </p>
+
+                      <div className="flex items-center gap-2 mb-3">
+                        <span className="line-through text-gray-400 text-xs">
+                          Rp {kost.priceBefore.toLocaleString("id-ID")}
+                        </span>
+                        <span className="text-primary font-bold text-sm">
+                          Rp {kost.priceAfter.toLocaleString("id-ID")}
+                        </span>
+                      </div>
+
+                      <Link
+                        to={`/kost/${kost.id}`}
+                        className="block text-center w-full border border-primary text-primary py-1.5 rounded-lg hover:bg-primary hover:text-white text-xs font-semibold"
+                      >
+                        View Detail
+                      </Link>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <div className="text-center py-12 bg-gray-50 rounded-lg">
+                <p className="text-gray-500 mb-2">📭 Tidak ada promo hari ini</p>
+                <Link to="/promotions" className="text-primary text-sm hover:underline">
+                  Lihat semua promo →
+                </Link>
+              </div>
+            )}
           </div>
         </section>
 
@@ -238,40 +361,35 @@ Mohon informasinya ya, terima kasih 🙏
                   className="bg-white rounded-xl shadow-sm hover:shadow-md transition overflow-hidden"
                 >
                   <img
-                    src={kost.image}
+                    src={kost.image || "/images/default-kost.png"}
                     alt={kost.name}
                     className="h-40 w-full object-cover"
+                    onError={(e) => {
+                      e.target.src = "/images/default-kost.png";
+                    }}
                   />
 
                   <div className="p-4">
                     <h3 className="font-semibold text-lg mb-1">
-                      {kost.name}
+                      {kost.name || "Kost"}
                     </h3>
 
                     <p className="text-sm text-gray-500 mb-2">
-                      📍 {kost.city || kost.location}
+                      📍 {kost.city || "Kota"}
                     </p>
 
                     <span className="inline-block bg-blue-100 text-blue-600 text-xs font-semibold px-3 py-1 rounded-full mb-2">
-                      {kost.type || "Kost"}
+                      {kost.type || "Tipe"}
                     </span>
 
                     <div className="flex items-center gap-2 mb-3">
-                      {kost.discount > 0 && (
+                      {kost.discount > 0 && kost.priceBefore && (
                         <span className="line-through text-gray-400 text-sm">
-                          Rp{" "}
-                          {kost.priceBefore
-                            ? kost.priceBefore.toLocaleString("id-ID")
-                            : (kost.price * 1.2).toLocaleString("id-ID")}
+                          Rp {Number(kost.priceBefore).toLocaleString("id-ID")}
                         </span>
                       )}
                       <span className="text-primary font-bold">
-                        Rp{" "}
-                        {kost.price
-                          ? kost.price.toLocaleString("id-ID")
-                          : kost.priceAfter
-                          ? kost.priceAfter.toLocaleString("id-ID")
-                          : "0"}
+                        Rp {Number(kost.priceAfter || kost.price || 0).toLocaleString("id-ID")}
                       </span>
                     </div>
 
@@ -292,30 +410,33 @@ Mohon informasinya ya, terima kasih 🙏
         <section className="bg-white py-20">
           <div className="max-w-7xl mx-auto px-4">
             <div className="grid md:grid-cols-2 gap-14 items-center">
+
+              {/* LEFT – TEXT */}
               <div>
                 <h2 className="text-3xl font-bold mb-4">
                   Tentang DED-Kost
                 </h2>
 
                 <p className="text-gray-600 mb-6 leading-relaxed">
-                  DED-Kost adalah platform pencarian kost yang dirancang untuk
-                  membantu mahasiswa dan pekerja menemukan hunian terbaik
-                  dengan cara yang mudah, cepat, dan transparan.
+                  DED-Kost adalah platform pencarian kost yang dirancang untuk membantu
+                  mahasiswa dan pekerja menemukan hunian terbaik dengan cara yang mudah,
+                  cepat, dan transparan.
                 </p>
 
                 <p className="text-gray-600 mb-8 leading-relaxed">
-                  Kami percaya bahwa mencari tempat tinggal bukan hanya soal
-                  harga, tetapi juga kenyamanan, lokasi, dan keamanan.
+                  Kami percaya bahwa mencari tempat tinggal bukan hanya soal harga,
+                  tetapi juga kenyamanan, lokasi, dan keamanan.
                 </p>
 
                 <Link
                   to="/about"
                   className="inline-block bg-primary text-white px-6 py-3 rounded-lg font-semibold hover:bg-primary/90"
                 >
-                  Learn More About Us...
+                  Learn More About Us →
                 </Link>
               </div>
 
+              {/* RIGHT – VALUE CARDS */}
               <div className="grid sm:grid-cols-2 gap-6">
                 <div className="bg-gray-50 p-6 rounded-xl shadow-sm text-center">
                   <p className="text-3xl mb-3">🤝</p>
@@ -349,14 +470,16 @@ Mohon informasinya ya, terima kasih 🙏
                   </p>
                 </div>
               </div>
+
             </div>
           </div>
         </section>
-
-        {/* ================= CONTACT US ================= */}
+        
+        {/* CONTACT US */}
         <section className="bg-gray-50">
           <div className="max-w-7xl mx-auto px-4 py-20">
             <div className="grid md:grid-cols-2 gap-12 items-center">
+              {/* LEFT TEXT */}
               <div>
                 <h2 className="text-3xl font-bold mb-4">
                   Hubungi Kami
@@ -368,15 +491,17 @@ Mohon informasinya ya, terima kasih 🙏
 
                 <ul className="text-gray-600 space-y-2 text-sm">
                   <li>📧 support@ded-kost.com</li>
-                  <li>💬 WhatsApp: +62 831-1316-5020</li>
+                  <li>💬 WhatsApp: +62 812-3456-7890</li>
                   <li>📍 Yogyakarta, Indonesia</li>
                 </ul>
               </div>
 
+              {/* RIGHT FORM */}
               <ContactForm />
             </div>
           </div>
         </section>
+
       </main>
 
       <Footer />

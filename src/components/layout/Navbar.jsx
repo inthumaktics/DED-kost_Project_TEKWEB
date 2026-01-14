@@ -1,11 +1,63 @@
-import { Link } from "react-router-dom";
-import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
 import logoNavbar from "@/assets/logo/logo_navbar.png";
 
 const Navbar = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isAdminLoggedIn, setIsAdminLoggedIn] = useState(false);
+  const [userName, setUserName] = useState("");
+  const navigate = useNavigate();
 
   const menuItems = ["Home", "Explore", "Promotions", "About"];
+
+  // Cek status login saat komponen dimount
+  useEffect(() => {
+    checkLoginStatus();
+    
+    // Tambahkan event listener untuk perubahan localStorage
+    window.addEventListener('storage', checkLoginStatus);
+    
+    return () => {
+      window.removeEventListener('storage', checkLoginStatus);
+    };
+  }, []);
+
+  // Fungsi untuk mengecek status login
+  const checkLoginStatus = () => {
+    const adminStatus = localStorage.getItem("isAdminLoggedIn") === "true";
+    const userStatus = localStorage.getItem("isLoggedIn") === "true";
+    const storedUserName = localStorage.getItem("userName") || "";
+    
+    setIsAdminLoggedIn(adminStatus);
+    setIsLoggedIn(userStatus);
+    setUserName(storedUserName);
+  };
+
+  // Fungsi untuk logout
+  const handleLogout = () => {
+    // Hapus semua data login dari localStorage
+    localStorage.removeItem("isAdminLoggedIn");
+    localStorage.removeItem("isLoggedIn");
+    localStorage.removeItem("userRole");
+    localStorage.removeItem("userId");
+    localStorage.removeItem("userName");
+    localStorage.removeItem("userEmail");
+    
+    // Reset state
+    setIsAdminLoggedIn(false);
+    setIsLoggedIn(false);
+    setUserName("");
+    
+    // Tutup mobile menu jika terbuka
+    setIsMobileMenuOpen(false);
+    
+    // Redirect ke home page
+    navigate("/");
+    
+    // Refresh halaman untuk update state
+    window.location.reload();
+  };
 
   return (
     <nav className="sticky top-0 z-50 bg-white shadow-lg border-b border-gray-200">
@@ -62,20 +114,54 @@ const Navbar = () => {
 
               <div className="w-6" />
 
-              {/* Auth */}
-              <Link
-                to="/signup"
-                className="text-primary border border-primary px-4 py-2 rounded-lg text-sm font-medium hover:bg-primary hover:text-white transition-all duration-200"
-              >
-                Sign Up
-              </Link>
+              {/* Auth Section */}
+              {isLoggedIn || isAdminLoggedIn ? (
+                <div className="flex items-center space-x-4">
+                  {/* Welcome Message */}
+                  <div className="text-sm text-gray-700">
+                    Welcome,{" "}
+                    <span className="font-semibold text-primary">
+                      {isAdminLoggedIn ? "Admin" : userName || "User"}
+                    </span>
+                  </div>
+                  
+                  {/* Dashboard Link for Admin */}
+                  {isAdminLoggedIn && (
+                    <Link
+                      to="/admin/dashboard"
+                      className="text-primary border border-primary px-4 py-2 rounded-lg text-sm font-medium hover:bg-primary hover:text-white transition-all duration-200"
+                    >
+                      Dashboard
+                    </Link>
+                  )}
+                  
+                  {/* Logout Button */}
+                  <button
+                    onClick={handleLogout}
+                    className="text-gray-700 hover:text-primary hover:bg-violet-200 px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200"
+                  >
+                    Logout
+                  </button>
+                </div>
+              ) : (
+                <>
+                  {/* Sign Up Button */}
+                  <Link
+                    to="/signup"
+                    className="text-primary border border-primary px-4 py-2 rounded-lg text-sm font-medium hover:bg-primary hover:text-white transition-all duration-200"
+                  >
+                    Sign Up
+                  </Link>
 
-              <Link
-                to="/login"
-                className="text-gray-700 hover:text-primary hover:bg-violet-200 px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200"
-              >
-                Login
-              </Link>
+                  {/* Login Button */}
+                  <Link
+                    to="/login"
+                    className="text-gray-700 hover:text-primary hover:bg-violet-200 px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200"
+                  >
+                    Login
+                  </Link>
+                </>
+              )}
             </div>
           </div>
         </div>
@@ -99,21 +185,38 @@ const Navbar = () => {
 
             <hr />
 
-            <Link
-              to="/signup"
-              onClick={() => setIsMobileMenuOpen(false)}
-              className="block text-primary border border-primary px-4 py-2 rounded-lg text-sm font-medium text-center hover:bg-primary hover:text-white"
-            >
-              Sign Up
-            </Link>
+            {/* Auth Section for Mobile */}
+            {isLoggedIn || isAdminLoggedIn ? (
+              <>
 
-            <Link
-              to="/login"
-              onClick={() => setIsMobileMenuOpen(false)}
-              className="block text-gray-700 hover:bg-violet-100 px-4 py-2 rounded-lg text-sm font-medium text-center"
-            >
-              Login
-            </Link>
+                
+                {/* Logout Button (Mobile) */}
+                <button
+                  onClick={handleLogout}
+                  className="block w-full text-gray-700 hover:text-primary hover:bg-violet-100 px-4 py-2 rounded-lg text-sm font-medium text-center"
+                >
+                  Logout
+                </button>
+              </>
+            ) : (
+              <>
+                <Link
+                  to="/signup"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className="block text-primary border border-primary px-4 py-2 rounded-lg text-sm font-medium text-center hover:bg-primary hover:text-white"
+                >
+                  Sign Up
+                </Link>
+
+                <Link
+                  to="/login"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className="block text-gray-700 hover:bg-violet-100 px-4 py-2 rounded-lg text-sm font-medium text-center"
+                >
+                  Login
+                </Link>
+              </>
+            )}
           </div>
         </div>
       )}

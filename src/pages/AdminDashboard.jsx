@@ -7,6 +7,7 @@ const AdminDashboard = () => {
     loading,
     addKost,
     deleteKost,
+    updateKost,  // Tambahkan ini
     logout,
   } = useAdminKosts();
 
@@ -23,6 +24,7 @@ const AdminDashboard = () => {
       kosts={kosts}
       onAddKost={addKost}
       onDeleteKost={deleteKost}
+      onEditKost={updateKost}  // Tambahkan ini
       onLogout={logout}
     />
   );

@@ -5,31 +5,60 @@ import Footer from "@/components/layout/Footer";
 
 const Login = () => {
   const navigate = useNavigate();
-
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
+    setError("");
 
-    // === ADMIN LOGIN ===
+    console.log("Login attempt:", { email, password });
+
+  // === ADMIN LOGIN ===
     if (email === "admin@dedkost.com" && password === "admin123") {
       localStorage.setItem("isAdminLoggedIn", "true");
+      localStorage.setItem("userRole", "admin");
       console.log("Login sebagai Admin");
-      navigate("/admin/dashboard");
-      return;
+      // Gunakan window.location.href untuk redirect ke dashboard admin dengan base URL
+      window.location.href = "/DED-kost_Project_TEKWEB/admin/dashboard";
+      return; //tdk perlu
     }
 
-    // === USER LOGIN (SIMULASI) ===
-    if (email && password) {
-      console.log("Login sebagai User");
-      navigate("/");
-      return;
+    try {
+      // === USER LOGIN DARI MOCKAPI ===
+      console.log("Checking mockAPI for user...");
+      const response = await fetch("https://694a982526e870772065fe69.mockapi.io/Users");
+      
+      if (!response.ok) {
+        throw new Error("Gagal mengambil data user");
+      }
+      
+      const users = await response.json();
+      console.log("Users from mockAPI:", users);
+      
+      // Cari user dengan email dan password yang sesuai
+      const foundUser = users.find(
+        (user) => user.email === email && user.password === password
+      );
+      
+      if (foundUser) {
+        // Simpan data user ke localStorage
+        localStorage.setItem("isLoggedIn", "true");
+        localStorage.setItem("userRole", "user");
+        localStorage.setItem("userId", foundUser.id || "");
+        localStorage.setItem("userName", foundUser.name || foundUser.email.split('@')[0]);
+        localStorage.setItem("userEmail", foundUser.email);
+        
+        console.log("Login berhasil sebagai User:", foundUser.email);
+        navigate("/");
+      } else {
+        setError("Email atau password tidak valid!");
+      }
+    } catch (err) {
+      console.error("Error saat login:", err);
+      setError("Terjadi kesalahan. Silakan coba lagi.");
     }
-
-    // === ERROR ===
-    setError("Email atau password tidak valid!");
   };
 
   return (
@@ -87,17 +116,27 @@ const Login = () => {
             </button>
           </form>
 
-          {/* INFO ADMIN */}
-          <p className="text-xs text-center text-gray-400 mt-4">
-            *Admin login demo: <br />
-            <span className="font-medium">
-              admin@dedkost.com / admin123
-            </span>
-          </p>
+          {/* INFO LOGIN */}
+          <div className="mt-4 space-y-2">
+            <p className="text-xs text-center text-gray-400">
+              *Admin login: <br />
+              <span className="font-medium">
+                admin@dedkost.com / admin123
+              </span>
+            </p>
+            
+            <p className="text-xs text-center text-gray-400">
+              *User login: <br />
+              <span className="font-medium">
+                john.doe@gmail.com / pass123
+              </span>
+            </p>
+          
+          </div>
 
           {/* SIGN UP LINK */}
           <p className="text-sm text-center text-gray-600 mt-8">
-            Don’t have an account?{" "}
+            Don't have an account?{" "}
             <Link
               to="/signup"
               className="text-primary font-semibold hover:underline"

@@ -4,7 +4,7 @@ import AdminHeader from '../../components/admin/AdminHeader';
 import DataTable from '../../components/admin/DataTable';
 import FormData from '../../components/admin/FormData';
 
-const AdminDashboard = ({ kosts, onAddKost, onDeleteKost, onLogout }) => {
+const AdminDashboard = ({ kosts, onAddKost, onDeleteKost, onEditKost, onLogout }) => {
   return (
     <div className="min-h-screen bg-gray-50">
       <AdminHeader onLogout={onLogout} />
@@ -38,7 +38,7 @@ const AdminDashboard = ({ kosts, onAddKost, onDeleteKost, onLogout }) => {
                   <div>
                     <p className="text-sm text-gray-600">Rata-rata Harga</p>
                     <p className="text-2xl font-bold text-gray-900">
-                      Rp {kosts.length > 0 ? Math.round(kosts.reduce((sum, kost) => sum + kost.price, 0) / kosts.length).toLocaleString() : '0'}
+                      Rp {kosts.length > 0 ? Math.round(kosts.reduce((sum, kost) => sum + (kost.priceAfter || kost.price || 0), 0) / kosts.length).toLocaleString() : '0'}
                     </p>
                   </div>
                 </div>
@@ -54,7 +54,7 @@ const AdminDashboard = ({ kosts, onAddKost, onDeleteKost, onLogout }) => {
                   <div>
                     <p className="text-sm text-gray-600">Lokasi Tersedia</p>
                     <p className="text-2xl font-bold text-gray-900">
-                      {[...new Set(kosts.map(kost => kost.location))].length}
+                      {[...new Set(kosts.map(kost => kost.city || kost.location).filter(Boolean))].length}
                     </p>
                   </div>
                 </div>
@@ -66,7 +66,8 @@ const AdminDashboard = ({ kosts, onAddKost, onDeleteKost, onLogout }) => {
           <div className="lg:col-span-2">
             <div className="bg-white p-6 rounded-lg shadow border">
               <h2 className="text-xl font-semibold mb-4">Daftar Kost</h2>
-              <DataTable kosts={kosts} onDeleteKost={onDeleteKost} />
+              {/* PERBAIKAN DI SINI: tambahkan onEditKost */}
+              <DataTable kosts={kosts} onDeleteKost={onDeleteKost} onEditKost={onEditKost} />
             </div>
           </div>
 
