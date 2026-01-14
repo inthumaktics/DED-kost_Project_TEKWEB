@@ -5,7 +5,7 @@ import path from 'path'
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [react()],
-  base : '/DED-kost_Project_TEKWEB/',
+  base : '/',
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),
